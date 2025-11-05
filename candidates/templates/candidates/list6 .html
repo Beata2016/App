@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Partner - CV & Jobs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .fade-in { animation: fadeIn 0.3s ease-in; }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    .chat-ai { position: fixed; bottom: 20px; right: 20px; z-index: 50; }
+    .status-circle { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:5px; }
+  </style>
+</head>
+<body class="bg-white font-sans">
+
+<div id="app"></div>
+
+<script>
+const translations = {
+  pl: {
+    title:'HR Partner', hero:'Znajdź swoją pracę', search:'Szukaj według stanowiska, branży, lokalizacji...', searchBtn:'Szukaj',
+    jobListings:'Oferty pracy', allSectors:'Wszystkie branże', candidates:'Kandydaci', contactUs:'Kontakt', home:'Strona główna',
+    forCompanies:'Dla Firm', forCandidates:'Dla Kandydatów', aboutUs:'O nas', ai:'AI Rekrutacja'
+  }
+};
+
+const sectors = ['Construction','Production','Technical','Logistics','Cleaning','IT','Healthcare','Sales','Marketing','Finance'];
+
+const candidatesData = [
+  {code:'CAND-001', position:'Carpenter', age:32, city:'Warsaw', country:'Poland', available:'yes', sectors:['Construction'], languages:['English','Dutch'], experience:5, courses:['Safety','Teamwork'], nationality:'Polish'},
+  {code:'CAND-002', position:'Electrician', age:28, city:'Gdansk', country:'Poland', available:'no', sectors:['Technical'], languages:['English','German'], experience:4, courses:['Electrical','Safety'], nationality:'Polish'},
+  {code:'CAND-003', position:'Driver', age:35, city:'Amsterdam', country:'Netherlands', available:'yes', sectors:['Logistics'], languages:['Dutch','English'], experience:7, courses:['Truck','License C'], nationality:'Dutch'},
+  {code:'CAND-004', position:'Plumber', age:30, city:'Rotterdam', country:'Netherlands', available:'yes', sectors:['Technical'], languages:['Dutch','English'], experience:6, courses:['Pipework'], nationality:'Dutch'},
+  {code:'CAND-005', position:'Welder', age:27, city:'Utrecht', country:'Netherlands', available:'no', sectors:['Production'], languages:['English'], experience:3, courses:['Welding'], nationality:'Dutch'},
+  {code:'CAND-006', position:'Painter', age:40, city:'The Hague', country:'Netherlands', available:'yes', sectors:['Construction'], languages:['English'], experience:10, courses:['Painting','Safety'], nationality:'Dutch'},
+  {code:'CAND-007', position:'Electrician', age:29, city:'Warsaw', country:'Poland', available:'yes', sectors:['Technical'], languages:['English','German'], experience:4, courses:['Electrical'], nationality:'Polish'},
+  {code:'CAND-008', position:'Technician', age:34, city:'Gdansk', country:'Poland', available:'no', sectors:['IT'], languages:['English','Dutch'], experience:6, courses:['IT Support'], nationality:'Polish'}
+];
+
+let currentLang = 'pl';
+let currentPage = 1;
+const perPage = 4;
+
+function t(key){ return translations[currentLang][key] || ''; }
+
+function renderCandidates(list){
+  const start = (currentPage-1)*perPage;
+  const end = start + perPage;
+  return list.slice(start,end).map(c=>`
+    <div class="border border-gray-200 p-6 rounded-lg hover:shadow-md transition">
+      <div class="flex items-center mb-2">
+        <span class="status-circle" style="background-color:${c.available==='yes'?'green':'orange'}"></span>
+        <div class="text-xl font-bold text-blue-600">${c.code}</div>
+      </div>
+      <div class="text-gray-700 mb-1">${c.position}, ${c.age} lat</div>
+      <div class="text-gray-500 text-sm">${c.city}, ${c.country} | ${c.nationality}</div>
+      <div class="text-gray-600 mt-2"><strong>Branże:</strong> ${c.sectors.join(', ')}</div>
+      <div class="text-gray-600 mt-1"><strong>Języki:</strong> ${c.languages.join(', ')}</div>
+      <div class="text-gray-600 mt-1"><strong>Doświadczenie:</strong> ${c.experience} lat</div>
+      <div class="text-gray-600 mt-1"><strong>Kursy:</strong> ${c.courses.join(', ')}</div>
+      <div class="mt-4">
+        <a href="mailto:kontakt@hrconsultingpartner.nl" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm inline-block">Kontakt</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function nextPage(){
+  const totalPages = Math.ceil(candidatesData.length/perPage);
+  if(currentPage<totalPages){ currentPage++; render(); }
+}
+
+function prevPage(){
+  if(currentPage>1){ currentPage--; render(); }
+}
+
+function render(){
+  const app = document.getElementById('app');
+  const totalPages = Math.ceil(candidatesData.length/perPage);
+  app.innerHTML = `
+    <header class="fixed w-full bg-white shadow z-50">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
+        <nav class="hidden md:flex gap-6 text-sm">
+          <a href="#" class="hover:text-blue-600 font-medium">${t('home')}</a>
+          <a href="#" class="hover:text-blue-600 font-medium">${t('forCompanies')}</a>
+          <a href="#" class="hover:text-blue-600 font-medium">${t('forCandidates')}</a>
+          <a href="#" class="hover:text-blue-600 font-medium">${t('aboutUs')}</a>
+          <a href="#" class="hover:text-blue-600 font-medium">${t('contactUs')}</a>
+          <a href="#" class="hover:text-blue-600 font-medium">${t('ai')}</a>
+        </nav>
+        <div class="flex gap-2">
+          ${['pl','en'].map(l=>`<button onclick="currentLang='${l}'; render();" class="px-3 py-2 rounded-lg font-semibold ${currentLang===l?'bg-blue-600 text-white':'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${l.toUpperCase()}</button>`).join('')}
+        </div>
+      </div>
+    </header>
+
+    <section class="pt-28 pb-16 px-4 bg-gray-50">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">${t('hero')}</h1>
+        <div class="flex justify-center mt-6 gap-2">
+          <input type="text" placeholder="${t('search')}" class="border-2 border-gray-300 rounded-l-lg px-4 py-2 w-2/3 outline-none"/>
+          <button class="bg-blue-600 text-white px-6 py-2 rounded-r-lg hover:bg-blue-700">${t('searchBtn')}</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 px-4 bg-gray-100">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center">${t('allSectors')}</h2>
+        <div class="flex flex-wrap justify-center gap-3">
+          ${sectors.map(s=>`<button class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-blue-100 hover:text-blue-800 font-medium">${s}</button>`).join('')}
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 px-4 bg-white">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center">${t('candidates')}</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          ${renderCandidates(candidatesData)}
+        </div>
+        <div class="mt-8 flex justify-center gap-2">
+          <button onclick="prevPage()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Prev</button>
+          <span class="px-4 py-2">Page ${currentPage} / ${totalPages}</span>
+          <button onclick="nextPage()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="chat-ai">
+      <button class="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700">
+        <i class="fas fa-robot"></i>
+      </button>
+    </div>
+
+    <footer class="bg-gray-900 text-white mt-20">
+      <div class="max-w-7xl mx-auto px-4 py-12 flex flex-col md:flex-row justify-between">
+        <div>
+          <div class="text-xl font-bold mb-4">${t('title')}</div>
+          <p class="text-gray-400 text-sm">Connecting talents with top employers across Europe.</p>
+        </div>
+        <div class="flex gap-3 mt-6 md:mt-0">
+          <a href="https://linkedin.com" target="_blank" class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://instagram.com" target="_blank" class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition"><i class="fab fa-instagram"></i></a>
+          <a href="https://twitter.com" target="_blank" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 text-center py-6">
+        <p class="text-sm">&copy; 2025 HR Consulting Partner. All rights reserved.</p>
+      </div>
+    </footer>
+  `;
+}
+
+render();
+</script>
+
+</body>
+</html>

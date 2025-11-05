@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodaj / Edytuj ofertę pracy</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { margin-bottom: 20px; }
+        form { max-width: 800px; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input[type="text"], input[type="number"], input[type="decimal"], select, textarea {
+            width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;
+        }
+        textarea { height: 100px; }
+        button { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Dodaj / Edytuj ofertę pracy</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="title">Tytuł oferty / Job title</label>
+        <input type="text" name="title" id="title" value="{{ job.title|default:'' }}">
+
+        <label for="company_name">Nazwa firmy / Company name</label>
+        <input type="text" name="company_name" id="company_name" value="{{ job.company_name|default:'' }}">
+
+        <label for="positions_available">Liczba wolnych stanowisk / Positions available</label>
+        <input type="number" name="positions_available" id="positions_available" value="{{ job.positions_available|default:1 }}" min="1">
+
+        <label for="industry">Branża / Industry</label>
+        <select name="industry" id="industry">
+            {% for code, name in INDUSTRY_CHOICES %}
+                <option value="{{ code }}" {% if job.industry == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="job_role">Stanowisko / Job role</label>
+        <select name="job_role" id="job_role">
+            {% for code, name in JOB_ROLE_CHOICES %}
+                <option value="{{ code }}" {% if job.job_role == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="country">Kraj / Country</label>
+        <select name="country" id="country">
+            {% for code, name in COUNTRY_CHOICES %}
+                <option value="{{ code }}" {% if job.country == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="location">Lokalizacja / Location</label>
+        <input type="text" name="location" id="location" value="{{ job.location|default:'' }}">
+
+        <label for="remote_option">Praca zdalna / Remote option</label>
+        <select name="remote_option" id="remote_option">
+            {% for code, name in REMOTE_OPTION_CHOICES %}
+                <option value="{{ code }}" {% if job.remote_option == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="language_required">Wymagany język / Required language</label>
+        <select name="language_required" id="language_required">
+            {% for code, name in LANGUAGE_CHOICES %}
+                <option value="{{ code }}" {% if job.language_required == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="language_level">Poziom języka / Language level</label>
+        <select name="language_level" id="language_level">
+            {% for code, name in LANGUAGE_LEVEL_CHOICES %}
+                <option value="{{ code }}" {% if job.language_level == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="weekly_hours">Liczba godzin w tygodniu / Weekly hours</label>
+        <select name="weekly_hours" id="weekly_hours">
+            {% for code, name in WEEKLY_HOURS_CHOICES %}
+                <option value="{{ code }}" {% if job.weekly_hours == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="overtime">Nadgodziny / Overtime</label>
+        <select name="overtime" id="overtime">
+            {% for code, name in OVERTIME_CHOICES %}
+                <option value="{{ code }}" {% if job.overtime == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="employment_type">Typ zatrudnienia / Employment type</label>
+        <select name="employment_type" id="employment_type">
+            {% for code, name in EMPLOYMENT_TYPE_CHOICES %}
+                <option value="{{ code }}" {% if job.employment_type == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="salary_type">Typ wynagrodzenia / Salary type</label>
+        <select name="salary_type" id="salary_type">
+            {% for code, name in SALARY_TYPE_CHOICES %}
+                <option value="{{ code }}" {% if job.salary_type == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="salary_min">Wynagrodzenie od / Salary from</label>
+        <input type="number" step="0.01" name="salary_min" id="salary_min" value="{{ job.salary_min|default:'' }}">
+
+        <label for="salary_max">Wynagrodzenie do / Salary to</label>
+        <input type="number" step="0.01" name="salary_max" id="salary_max" value="{{ job.salary_max|default:'' }}">
+
+        <label for="salary_currency">Waluta / Currency</label>
+        <input type="text" name="salary_currency" id="salary_currency" value="{{ job.salary_currency|default:'EUR' }}">
+
+        <label for="accommodation">Zakwaterowanie / Accommodation</label>
+        <select name="accommodation" id="accommodation">
+            {% for code, name in ACCOMMODATION_CHOICES %}
+                <option value="{{ code }}" {% if job.accommodation == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="transport">Transport / Transportation</label>
+        <select name="transport" id="transport">
+            {% for code, name in TRANSPORT_CHOICES %}
+                <option value="{{ code }}" {% if job.transport == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="requirements">Wymagania / Requirements</label>
+        <textarea name="requirements" id="requirements">{{ job.requirements|default:'' }}</textarea>
+
+        <label for="responsibilities">Obowiązki / Responsibilities</label>
+        <textarea name="responsibilities" id="responsibilities">{{ job.responsibilities|default:'' }}</textarea>
+
+        <label for="benefits">Oferujemy / We offer</label>
+        <textarea name="benefits" id="benefits">{{ job.benefits|default:'' }}</textarea>
+
+        <label for="additional_info">Inne informacje / Additional info</label>
+        <textarea name="additional_info" id="additional_info">{{ job.additional_info|default:'' }}</textarea>
+
+        <label for="is_active">Aktywna / Active</label>
+        <input type="checkbox" name="is_active" id="is_active" {% if job.is_active %}checked{% endif %}>
+
+        <button type="submit">Zapisz ofertę / Save Job</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Partner - O nas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .hero-image {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200') center/cover;
+            min-height: 500px;
+        }
+    </style>
+</head>
+<body class="bg-white">
+<div id="app"></div>
+
+<script>
+const translations = {
+  pl: {
+    title: 'HR Partner',
+    home: 'Strona główna',
+    aboutUs: 'O nas',
+    forCandidates: 'Dla kandydatów',
+    forCompanies: 'Dla firm',
+    cvDatabase: 'Baza CV',
+    contact: 'Kontakt',
+    hero: 'Poznaj naszą misję i wartości',
+    heroSub: 'Jesteśmy na rynku od 20 lat jako rekruterzy. Nasza działalność obejmuje różne sektory, między innymi budownictwo, produkcję, rolnictwo, IT, logistykę, finanse i opiekę zdrowotną. Łączymy talenty z najlepszymi pracodawcami w Holandii, dbając o idealne dopasowanie kandydatów do firm.',
+    missionTitle: 'Nasza misja',
+    missionText: 'Celem HR Partner jest dopasowanie odpowiednich kandydatów do firm, w których mogą rozwijać najlepiej posiadane umiejętności.',
+    visionTitle: 'Nasza wizja',
+    visionText: 'Chcemy stać się najskuteczniejszym partnerem w rekrutacji i doradztwie kariery w Holandii.',
+    valuesTitle: 'Nasze wartości',
+    valuesText: 'Profesjonalizm, zaufanie, indywidualne podejście do każdego kandydata i firmy.',
+    teamTitle: 'Nasz zespół',
+    teamMembers: [
+      { name: 'Jan Kowalski', role: 'CEO & Założyciel', img: 'https://via.placeholder.com/150' },
+      { name: 'Anna Nowak', role: 'HR Manager', img: 'https://via.placeholder.com/150' },
+      { name: 'Piotr Wiśniewski', role: 'Recruitment Specialist', img: 'https://via.placeholder.com/150' }
+    ],
+    contactUs: 'Skontaktuj się z nami',
+    viewJobs: 'Przejrzyj oferty',
+    footerAbout: 'O firmie',
+    footerAboutText: 'HR Partner to wiodąca agencja rekrutacyjna w Holandii, specjalizująca się w łączeniu talentów z najlepszymi pracodawcami.',
+    footerQuickLinks: 'Szybkie linki',
+    footerServices: 'Usługi',
+    footerRecruitment: 'Rekrutacja pracowników',
+    footerConsulting: 'Doradztwo HR',
+    footerOutsourcing: 'Outsourcing pracowników',
+    footerTraining: 'Szkolenia',
+    footerContactInfo: 'Kontakt',
+    footerRights: 'Wszelkie prawa zastrzeżone.',
+    phone: 'Telefon',
+    email: 'Email',
+    address: 'Adres'
+  },
+  nl: {
+    title: 'HR Partner',
+    home: 'Home',
+    aboutUs: 'Over Ons',
+    forCandidates: 'Voor Kandidaten',
+    forCompanies: 'Voor Bedrijven',
+    cvDatabase: 'CV Database',
+    contact: 'Contact',
+    hero: 'Ontdek onze missie en waarden',
+    heroSub: 'Wij zijn al 20 jaar actief als recruiters. Onze activiteiten omvatten verschillende sectoren, waaronder bouw, productie, landbouw, IT, logistiek, financiën en gezondheidszorg. Wij verbinden talenten met de beste werkgevers in Nederland en zorgen voor de perfecte match.',
+    missionTitle: 'Onze missie',
+    missionText: 'HR Partner richt zich op het matchen van talenten met bedrijven waarin ze zich het beste kunnen ontwikkelen.',
+    visionTitle: 'Onze visie',
+    visionText: 'Wij willen de meest effectieve partner zijn in recruitment en loopbaanadvies in Nederland.',
+    valuesTitle: 'Onze waarden',
+    valuesText: 'Professionaliteit, vertrouwen, individuele benadering van elke kandidaat en bedrijf.',
+    teamTitle: 'Ons team',
+    teamMembers: [
+      { name: 'Jan Kowalski', role: 'CEO & Oprichter', img: 'https://via.placeholder.com/150' },
+      { name: 'Anna Nowak', role: 'HR Manager', img: 'https://via.placeholder.com/150' },
+      { name: 'Piotr Wiśniewski', role: 'Recruitment Specialist', img: 'https://via.placeholder.com/150' }
+    ],
+    contactUs: 'Neem contact met ons op',
+    viewJobs: 'Bekijk vacatures',
+    footerAbout: 'Over ons',
+    footerAboutText: 'HR Partner is een toonaangevend recruitment bureau in Nederland, gespecialiseerd in het verbinden van talenten met de beste werkgevers.',
+    footerQuickLinks: 'Snelle links',
+    footerServices: 'Diensten',
+    footerRecruitment: 'Werving & Selectie',
+    footerConsulting: 'HR Advies',
+    footerOutsourcing: 'Personeelsdetachering',
+    footerTraining: 'Trainingen',
+    footerContactInfo: 'Contact',
+    footerRights: 'Alle rechten voorbehouden.',
+    phone: 'Telefoon',
+    email: 'E-mail',
+    address: 'Adres'
+  },
+  en: {
+    title: 'HR Partner',
+    home: 'Home',
+    aboutUs: 'About Us',
+    forCandidates: 'For Candidates',
+    forCompanies: 'For Companies',
+    cvDatabase: 'CV Database',
+    contact: 'Contact',
+    hero: 'Discover our mission and values',
+    heroSub: 'We have been operating for 20 years as recruiters. Our activity covers various sectors, including construction, production, agriculture, IT, logistics, finance, and healthcare. We connect talents with the best employers in the Netherlands and ensure perfect matches.',
+    missionTitle: 'Our Mission',
+    missionText: 'HR Partner aims to match talents with companies where they can grow best.',
+    visionTitle: 'Our Vision',
+    visionText: 'We aim to be the most effective partner in recruitment and career advice in the Netherlands.',
+    valuesTitle: 'Our Values',
+    valuesText: 'Professionalism, trust, and an individual approach to each candidate and company.',
+    teamTitle: 'Our Team',
+    teamMembers: [
+      { name: 'Jan Kowalski', role: 'CEO & Founder', img: 'https://via.placeholder.com/150' },
+      { name: 'Anna Nowak', role: 'HR Manager', img: 'https://via.placeholder.com/150' },
+      { name: 'Piotr Wiśniewski', role: 'Recruitment Specialist', img: 'https://via.placeholder.com/150' }
+    ],
+    contactUs: 'Contact Us',
+    viewJobs: 'View Jobs',
+    footerAbout: 'About',
+    footerAboutText: 'HR Partner is a leading recruitment agency in the Netherlands, specializing in connecting talents with the best employers.',
+    footerQuickLinks: 'Quick Links',
+    footerServices: 'Services',
+    footerRecruitment: 'Recruitment',
+    footerConsulting: 'HR Consulting',
+    footerOutsourcing: 'Staff Outsourcing',
+    footerTraining: 'Training',
+    footerContactInfo: 'Contact',
+    footerRights: 'All rights reserved.',
+    phone: 'Phone',
+    email: 'Email',
+    address: 'Address'
+  },
+  cs: {
+    title: 'HR Partner',
+    home: 'Domů',
+    aboutUs: 'O nás',
+    forCandidates: 'Pro kandidáty',
+    forCompanies: 'Pro firmy',
+    cvDatabase: 'Databáze CV',
+    contact: 'Kontakt',
+    hero: 'Objevte naši misi a hodnoty',
+    heroSub: 'Jsme na trhu již 20 let jako personalisté. Naše činnost pokrývá různé sektory, včetně stavebnictví, výroby, zemědělství, IT, logistiky, financí a zdravotnictví. Spojujeme talenty s nejlepšími zaměstnavateli v Nizozemsku a zajišťujeme dokonalé propojení.',
+    missionTitle: 'Naše mise',
+    missionText: 'HR Partner se zaměřuje na propojení talentů s firmami, kde se mohou nejlépe rozvíjet.',
+    visionTitle: 'Naše vize',
+    visionText: 'Chceme být nejefektivnějším partnerem v oblasti náboru a kariérního poradenství v Nizozemsku.',
+    valuesTitle: 'Naše hodnoty',
+    valuesText: 'Profesionalita, důvěra a individuální přístup ke každému kandidátovi a firmě.',
+    teamTitle: 'Náš tým',
+    teamMembers: [
+      { name: 'Jan Kowalski', role: 'CEO & Zakladatel', img: 'https://via.placeholder.com/150' },
+      { name: 'Anna Nowak', role: 'HR Manager', img: 'https://via.placeholder.com/150' },
+      { name: 'Piotr Wiśniewski', role: 'Recruitment Specialist', img: 'https://via.placeholder.com/150' }
+    ],
+    contactUs: 'Kontaktujte nás',
+    viewJobs: 'Prohlédněte si nabídky',
+    footerAbout: 'O společnosti',
+    footerAboutText: 'HR Partner je přední personální agentura v Nizozemsku, specializující se na propojení talentů s nejlepšími zaměstnavateli.',
+    footerQuickLinks: 'Rychlé odkazy',
+    footerServices: 'Služby',
+    footerRecruitment: 'Nábor zaměstnanců',
+    footerConsulting: 'HR poradenství',
+    footerOutsourcing: 'Outsourcing zaměstnanců',
+    footerTraining: 'Školení',
+    footerContactInfo: 'Kontakt',
+    footerRights: 'Všechna práva vyhrazena.',
+    phone: 'Telefon',
+    email: 'Email',
+    address: 'Adresa'
+  },
+  bg: {
+    title: 'HR Partner',
+    home: 'Начало',
+    aboutUs: 'За нас',
+    forCandidates: 'За кандидати',
+    forCompanies: 'За фирми',
+    cvDatabase: 'База от CV',
+    contact: 'Контакт',
+    hero: 'Открийте нашата мисия и ценности',
+    heroSub: 'Ние сме на пазара от 20 години като рекрутери. Дейността ни обхваща различни сектори, включително строителство, производство, селско стопанство, IT, логистика, финанси и здравеопазване. Свързваме таланти с най-добрите работодатели в Нидерландия и осигуряваме идеални съвпадения.',
+    missionTitle: 'Нашата мисия',
+    missionText: 'HR Partner цели да съвпадне талантите с компании, в които могат да се развиват най-добре.',
+    visionTitle: 'Нашето виждане',
+    visionText: 'Стремим се да бъдем най-ефективният партньор в наемането и кариерното консултиране в Нидерландия.',
+    valuesTitle: 'Нашите ценности',
+    valuesText: 'Професионализъм, доверие и индивидуален подход към всеки кандидат и компания.',
+    teamTitle: 'Нашият екип',
+    teamMembers: [
+      { name: 'Jan Kowalski', role: 'CEO & Основател', img: 'https://via.placeholder.com/150' },
+      { name: 'Anna Nowak', role: 'HR Manager', img: 'https://via.placeholder.com/150' },
+      { name: 'Piotr Wiśniewski', role: 'Recruitment Specialist', img: 'https://via.placeholder.com/150' }
+    ],
+    contactUs: 'Свържете се с нас',
+    viewJobs: 'Преглед на оферти',
+    footerAbout: 'За компанията',
+    footerAboutText: 'HR Partner е водеща рекрутърска агенция в Нидерландия, специализирана в свързването на таланти с най-добрите работодатели.',
+    footerQuickLinks: 'Бързи връзки',
+    footerServices: 'Услуги',
+    footerRecruitment: 'Подбор на персонал',
+    footerConsulting: 'HR консултиране',
+    footerOutsourcing: 'Аутсорсинг на персонал',
+    footerTraining: 'Обучения',
+    footerContactInfo: 'Контакт',
+    footerRights: 'Всички права запазени.',
+    phone: 'Телефон',
+    email: 'Имейл',
+    address: 'Адрес'
+  }
+};
+
+let currentLang = 'pl';
+
+function t(key) {
+  return translations[currentLang][key] || '';
+}
+
+function changeLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  render();
+}
+
+function render() {
+  const app = document.getElementById('app');
+  const team = translations[currentLang].teamMembers.map(member => `
+    <div class="bg-white rounded-2xl p-6 text-center shadow-lg">
+      <img src="${member.img}" alt="${member.name}" class="mx-auto rounded-full mb-4">
+      <h3 class="text-xl font-bold mb-2 text-gray-900">${member.name}</h3>
+      <p class="text-gray-700 text-sm">${member.role}</p>
+    </div>
+  `).join('');
+
+  app.innerHTML = `
+    <div class="min-h-screen bg-white fade-in">
+      <!-- Header -->
+      <header class="fixed w-full bg-white shadow-sm z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
+          <nav class="flex gap-3 text-sm flex-wrap">
+    <a href="/" class="hover:text-blue-600 transition font-medium">🏠 Home</a>
+    <a href="/baza-danych/" class="hover:text-blue-600 transition font-medium">💼 CV Database</a>
+    <a href="/ogloszenia/" class="hover:text-blue-600 transition font-medium">📋 Vacatures</a>
+    <a href="/firma/" class="hover:text-blue-600 transition font-medium">🏢 Voor bedrijven</a>
+    <a href="/o-nas/" class="hover:text-blue-600 transition font-medium">👥 Over ons</a>
+    <a href="/kontakt/" class="hover:text-blue-600 transition font-medium">📧 Contact</a>
+    <a href="/ogloszenia/ai-chat/" class="hover:text-blue-600 transition font-medium">🤖 AI Chat</a>
+</nav>
+          <div class="flex gap-2">
+            ${['pl','nl','en','cs','bg'].map(l => `<button onclick="changeLang('${l}')" class="px-3 py-2 rounded-lg text-sm font-semibold transition ${currentLang===l?'bg-blue-600 text-white':'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${l.toUpperCase()}</button>`).join('')}
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero with Image -->
+      <section class="hero-image pt-32 pb-20 px-4 flex items-center justify-center">
+        <div class="max-w-5xl mx-auto text-center text-white">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6">${t('hero')}</h1>
+          <p class="text-xl md:text-2xl">${t('heroSub')}</p>
+        </div>
+      </section>
+
+      <!-- Mission & Vision -->
+      <section class="py-20 px-4">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+          <div class="bg-white rounded-2xl p-10 shadow-lg">
+            <h3 class="text-2xl font-bold mb-4 text-gray-900">${t('missionTitle')}</h3>
+            <p class="text-gray-700">${t('missionText')}</p>
+          </div>
+          <div class="bg-white rounded-2xl p-10 shadow-lg">
+            <h3 class="text-2xl font-bold mb-4 text-gray-900">${t('visionTitle')}</h3>
+            <p class="text-gray-700">${t('visionText')}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Values -->
+      <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-4xl font-bold mb-8">${t('valuesTitle')}</h2>
+          <p class="text-gray-700 text-lg">${t('valuesText')}</p>
+        </div>
+      </section>
+
+      <!-- Team -->
+      <section class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-4xl font-bold text-center mb-12">${t('teamTitle')}</h2>
+          <div class="grid md:grid-cols-3 gap-8">${team}</div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="py-20 px-4 bg-blue-600 text-white">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-4xl font-bold mb-6">${t('contactUs')}</h2>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="jobs.html" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100">${t('viewJobs')}</a>
+            <a href="contactus2.html" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700">${t('contactUs')}</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="bg-gray-900 text-gray-300 py-16">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div>
+            <h3 class="text-xl font-bold text-white mb-4">${t('title')}</h3>
+            <p class="text-sm">${t('footerAboutText')}</p>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-4">${t('footerQuickLinks')}</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="index.html" class="hover:text-white">${t('home')}</a></li>
+              <li><a href="overons.html" class="hover:text-white">${t('aboutUs')}</a></li>
+              <li><a href="candidates.html" class="hover:text-white">${t('forCandidates')}</a></li>
+              <li><a href="firma.html" class="hover:text-white">${t('forCompanies')}</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-4">${t('footerServices')}</h4>
+            <ul class="space-y-2 text-sm">
+              <li>${t('footerRecruitment')}</li>
+              <li>${t('footerConsulting')}</li>
+              <li>${t('footerOutsourcing')}</li>
+              <li>${t('footerTraining')}</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-4">${t('footerContactInfo')}</h4>
+            <ul class="space-y-2 text-sm">
+              <li><i class="fas fa-phone mr-2"></i> +31 123 456 789</li>
+              <li><i class="fas fa-envelope mr-2"></i> info@hrpartner.nl</li>
+              <li><i class="fas fa-map-marker-alt mr-2"></i> Amsterdam, NL</li>
+            </ul>
+          </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-gray-800 text-center text-sm">
+          <p>&copy; 2025 HR Partner. ${t('footerRights')}</p>
+        </div>
+      </footer>
+    </div>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>

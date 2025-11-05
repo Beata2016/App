@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Partner - Baza CV</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .candidate-card {
+      transition: all 0.3s ease;
+    }
+
+    .candidate-card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <div id="app"></div>
+
+  <script>
+    const translations = {
+      pl: { 
+        title: 'HR Partner',
+        cvDatabase: 'Baza CV',
+        searchPlaceholder: 'Szukaj po imieniu, stanowisku lub umiejętnościach...',
+        searchBtn: 'Szukaj',
+        allLanguages: 'Wszystkie języki',
+        experience: 'Doświadczenie',
+        years: 'lat',
+        skills: 'Umiejętności',
+        languages: 'Języki',
+        contactCandidate: 'Kontakt z kandydatem',
+        home: 'Strona Główna',
+        cvDatabaseNav: 'Baza CV',
+        jobOffers: 'Oferty pracy',
+        forCompaniesNav: 'Dla Firm',
+        forCandidatesNav: 'Dla Kandydatów',
+        aboutUs: 'O Nas',
+        contact: 'Kontakt',
+        ai: 'AI Rekrutacja',
+        heroTitle: 'Znajdź idealnego kandydata',
+        heroSubtitle: 'Przeglądaj profile wykwalifikowanych specjalistów gotowych do pracy',
+        filterByLanguage: 'Filtruj według języka',
+        resultsFound: 'Znaleziono kandydatów'
+      },
+      nl: { 
+        title: 'HR Partner',
+        cvDatabase: 'CV Database',
+        searchPlaceholder: 'Zoek op naam, functie of vaardigheden...',
+        searchBtn: 'Zoeken',
+        allLanguages: 'Alle talen',
+        experience: 'Ervaring',
+        years: 'jaar',
+        skills: 'Vaardigheden',
+        languages: 'Talen',
+        contactCandidate: 'Contact kandidaat',
+        home: 'Home',
+        cvDatabaseNav: 'CV Database',
+        jobOffers: 'Vacatures',
+        forCompaniesNav: 'Voor Bedrijven',
+        forCandidatesNav: 'Voor Kandidaten',
+        aboutUs: 'Over Ons',
+        contact: 'Contact',
+        ai: 'AI Werving',
+        heroTitle: 'Vind de ideale kandidaat',
+        heroSubtitle: 'Blader door profielen van gekwalificeerde professionals klaar voor werk',
+        filterByLanguage: 'Filter op taal',
+        resultsFound: 'Kandidaten gevonden'
+      },
+      en: { 
+        title: 'HR Partner',
+        cvDatabase: 'CV Database',
+        searchPlaceholder: 'Search by name, position or skills...',
+        searchBtn: 'Search',
+        allLanguages: 'All languages',
+        experience: 'Experience',
+        years: 'years',
+        skills: 'Skills',
+        languages: 'Languages',
+        contactCandidate: 'Contact candidate',
+        home: 'Home',
+        cvDatabaseNav: 'CV Database',
+        jobOffers: 'Job Offers',
+        forCompaniesNav: 'For Companies',
+        forCandidatesNav: 'For Candidates',
+        aboutUs: 'About Us',
+        contact: 'Contact',
+        ai: 'AI Recruitment',
+        heroTitle: 'Find the ideal candidate',
+        heroSubtitle: 'Browse profiles of qualified professionals ready to work',
+        filterByLanguage: 'Filter by language',
+        resultsFound: 'Candidates found'
+      },
+      cs: { 
+        title: 'HR Partner',
+        cvDatabase: 'Databáze CV',
+        searchPlaceholder: 'Hledat podle jména, pozice nebo dovedností...',
+        searchBtn: 'Hledat',
+        allLanguages: 'Všechny jazyky',
+        experience: 'Zkušenosti',
+        years: 'let',
+        skills: 'Dovednosti',
+        languages: 'Jazyky',
+        contactCandidate: 'Kontaktovat kandidáta',
+        home: 'Domů',
+        cvDatabaseNav: 'Databáze CV',
+        jobOffers: 'Nabídky práce',
+        forCompaniesNav: 'Pro společnosti',
+        forCandidatesNav: 'Pro kandidáty',
+        aboutUs: 'O nás',
+        contact: 'Kontakt',
+        ai: 'AI Nábor',
+        heroTitle: 'Najděte ideálního kandidáta',
+        heroSubtitle: 'Procházejte profily kvalifikovaných profesionálů připravených k práci',
+        filterByLanguage: 'Filtrovat podle jazyka',
+        resultsFound: 'Nalezených kandidátů'
+      },
+      bg: { 
+        title: 'HR Partner',
+        cvDatabase: 'База данни CV',
+        searchPlaceholder: 'Търсене по име, позиция или умения...',
+        searchBtn: 'Търсене',
+        allLanguages: 'Всички езици',
+        experience: 'Опит',
+        years: 'години',
+        skills: 'Умения',
+        languages: 'Езици',
+        contactCandidate: 'Свържете се с кандидат',
+        home: 'Начало',
+        cvDatabaseNav: 'База данни CV',
+        jobOffers: 'Работни оферти',
+        forCompaniesNav: 'За компании',
+        forCandidatesNav: 'За кандидати',
+        aboutUs: 'За нас',
+        contact: 'Контакт',
+        ai: 'AI Наемане',
+        heroTitle: 'Намерете идеалния кандидат',
+        heroSubtitle: 'Разгледайте профили на квалифицирани специалисти готови за работа',
+        filterByLanguage: 'Филтрирай по език',
+        resultsFound: 'Намерени кандидати'
+      },
+      de: {
+        title: 'HR Partner',
+        cvDatabase: 'Lebenslauf-Datenbank',
+        searchPlaceholder: 'Suche nach Name, Position oder Fähigkeiten...',
+        searchBtn: 'Suchen',
+        allLanguages: 'Alle Sprachen',
+        experience: 'Erfahrung',
+        years: 'Jahre',
+        skills: 'Fähigkeiten',
+        languages: 'Sprachen',
+        contactCandidate: 'Kandidat kontaktieren',
+        home: 'Startseite',
+        cvDatabaseNav: 'Lebenslauf-Datenbank',
+        jobOffers: 'Stellenangebote',
+        forCompaniesNav: 'Für Unternehmen',
+        forCandidatesNav: 'Für Kandidaten',
+        aboutUs: 'Über uns',
+        contact: 'Kontakt',
+        ai: 'KI-Rekrutierung',
+        heroTitle: 'Finden Sie den idealen Kandidaten',
+        heroSubtitle: 'Durchsuchen Sie Profile qualifizierter Fachkräfte, die arbeitsbereit sind',
+        filterByLanguage: 'Nach Sprache filtern',
+        resultsFound: 'Kandidaten gefunden'
+      }
+    };
+
+    const candidates = [
+      {
+        id: 1,
+        profiles: {
+          pl: { name: 'Jan Kowalski', position: 'Java Developer', location: 'Warszawa' },
+          nl: { name: 'Jan Kowalski', position: 'Java Ontwikkelaar', location: 'Warschau' },
+          en: { name: 'Jan Kowalski', position: 'Java Developer', location: 'Warsaw' },
+          cs: { name: 'Jan Kowalski', position: 'Java Vývojář', location: 'Varšava' },
+          bg: { name: 'Ян Ковалски', position: 'Java Разработчик', location: 'Варшава' },
+          de: { name: 'Jan Kowalski', position: 'Java-Entwickler', location: 'Warschau' }
+        },
+        experience: 5,
+        skills: ['Java', 'Spring Boot', 'SQL', 'REST API'],
+        languages: ['PL', 'EN', 'DE'],
+        primaryLang: 'pl'
+      },
+      {
+        id: 2,
+        profiles: {
+          pl: { name: 'Maria Nowak', position: 'Project Manager', location: 'Kraków' },
+          nl: { name: 'Maria Nowak', position: 'Projectmanager', location: 'Krakau' },
+          en: { name: 'Maria Nowak', position: 'Project Manager', location: 'Krakow' },
+          cs: { name: 'Maria Nowak', position: 'Projektový manažer', location: 'Krakov' },
+          bg: { name: 'Мария Новак', position: 'Проектен мениджър', location: 'Краков' },
+          de: { name: 'Maria Nowak', position: 'Projektmanagerin', location: 'Krakau' }
+        },
+        experience: 8,
+        skills: ['Agile', 'Scrum', 'Leadership', 'Budget Management'],
+        languages: ['PL', 'EN', 'NL'],
+        primaryLang: 'pl'
+      },
+      {
+        id: 3,
+        profiles: {
+          pl: { name: 'Pieter de Vries', position: 'Marketing Specialist', location: 'Amsterdam' },
+          nl: { name: 'Pieter de Vries', position: 'Marketingspecialist', location: 'Amsterdam' },
+          en: { name: 'Pieter de Vries', position: 'Marketing Specialist', location: 'Amsterdam' },
+          cs: { name: 'Pieter de Vries', position: 'Marketingový specialista', location: 'Amsterdam' },
+          bg: { name: 'Питер де Врис', position: 'Маркетинг специалист', location: 'Амстердам' },
+          de: { name: 'Pieter de Vries', position: 'Marketing-Spezialist', location: 'Amsterdam' }
+        },
+        experience: 6,
+        skills: ['SEO', 'Content Marketing', 'Google Analytics', 'Social Media'],
+        languages: ['NL', 'EN', 'DE'],
+        primaryLang: 'nl'
+      },
+      {
+        id: 4,
+        profiles: {
+          pl: { name: 'Emma Johnson', position: 'Business Analyst', location: 'Rotterdam' },
+          nl: { name: 'Emma Johnson', position: 'Business Analist', location: 'Rotterdam' },
+          en: { name: 'Emma Johnson', position: 'Business Analyst', location: 'Rotterdam' },
+          cs: { name: 'Emma Johnson', position: 'Obchodní analytik', location: 'Rotterdam' },
+          bg: { name: 'Ема Джонсън', position: 'Бизнес анализатор', location: 'Ротердам' },
+          de: { name: 'Emma Johnson', position: 'Business-Analystin', location: 'Rotterdam' }
+        },
+        experience: 4,
+        skills: ['Data Analysis', 'SQL', 'Power BI', 'Requirements Gathering'],
+        languages: ['EN', 'NL'],
+        primaryLang: 'en'
+      },
+      {
+        id: 5,
+        profiles: {
+          pl: { name: 'Petr Novák', position: 'HR Specialist', location: 'Praga' },
+          nl: { name: 'Petr Novák', position: 'HR-specialist', location: 'Praag' },
+          en: { name: 'Petr Novák', position: 'HR Specialist', location: 'Prague' },
+          cs: { name: 'Petr Novák', position: 'HR Specialista', location: 'Praha' },
+          bg: { name: 'Петр Новак', position: 'HR специалист', location: 'Прага' },
+          de: { name: 'Petr Novák', position: 'HR-Spezialist', location: 'Prag' }
+        },
+        experience: 7,
+        skills: ['Recruitment', 'Employee Relations', 'Training', 'HR Systems'],
+        languages: ['CS', 'EN', 'DE'],
+        primaryLang: 'cs'
+      },
+      {
+        id: 6,
+        profiles: {
+          pl: { name: 'Ivan Petrov', position: 'Software Engineer', location: 'Sofia' },
+          nl: { name: 'Ivan Petrov', position: 'Software Engineer', location: 'Sofia' },
+          en: { name: 'Ivan Petrov', position: 'Software Engineer', location: 'Sofia' },
+          cs: { name: 'Ivan Petrov', position: 'Softwarový inženýr', location: 'Sofie' },
+          bg: { name: 'Иван Петров', position: 'Софтуерен инженер', location: 'София' },
+          de: { name: 'Ivan Petrov', position: 'Software-Ingenieur', location: 'Sofia' }
+        },
+        experience: 3,
+        skills: ['Python', 'Django', 'Docker', 'AWS'],
+        languages: ['BG', 'EN'],
+        primaryLang: 'bg'
+      },
+      {
+        id: 7,
+        profiles: {
+          pl: { name: 'Hans Müller', position: 'Sales Manager', location: 'Berlin' },
+          nl: { name: 'Hans Müller', position: 'Salesmanager', location: 'Berlijn' },
+          en: { name: 'Hans Müller', position: 'Sales Manager', location: 'Berlin' },
+          cs: { name: 'Hans Müller', position: 'Obchodní manažer', location: 'Berlín' },
+          bg: { name: 'Ханс Мюлер', position: 'Мениджър продажби', location: 'Берлин' },
+          de: { name: 'Hans Müller', position: 'Vertriebsleiter', location: 'Berlin' }
+        },
+        experience: 10,
+        skills: ['B2B Sales', 'Negotiation', 'CRM', 'Team Leadership'],
+        languages: ['DE', 'EN', 'NL'],
+        primaryLang: 'de'
+      },
+      {
+        id: 8,
+        profiles: {
+          pl: { name: 'Anna Wiśniewska', position: 'Frontend Developer', location: 'Gdańsk' },
+          nl: { name: 'Anna Wiśniewska', position: 'Frontend Ontwikkelaar', location: 'Gdańsk' },
+          en: { name: 'Anna Wiśniewska', position: 'Frontend Developer', location: 'Gdansk' },
+          cs: { name: 'Anna Wiśniewska', position: 'Frontend Vývojář', location: 'Gdaňsk' },
+          bg: { name: 'Анна Вишневска', position: 'Frontend разработчик', location: 'Гданск' },
+          de: { name: 'Anna Wiśniewska', position: 'Frontend-Entwicklerin', location: 'Danzig' }
+        },
+        experience: 4,
+        skills: ['React', 'JavaScript', 'CSS', 'TypeScript'],
+        languages: ['PL', 'EN'],
+        primaryLang: 'pl'
+      }
+    ];
+
+    let currentLang = localStorage.getItem('hrPartnerLang') || 'nl';
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function t(key) { return translations[currentLang][key] || ''; }
+    
+    function changeLang(lang) { 
+      currentLang = lang; 
+      localStorage.setItem('hrPartnerLang', lang);
+      render(); 
+    }
+    
+    function filterCandidates(lang) { 
+      currentFilter = lang; 
+      renderCandidates(); 
+    }
+
+    function searchCandidates(query) {
+      searchQuery = query.toLowerCase();
+      renderCandidates();
+    }
+
+    function renderCandidates() {
+      const container = document.getElementById('candidates-container');
+      const countEl = document.getElementById('results-count');
+      if (!container) return;
+      
+      let filtered = candidates;
+      
+      // Filter by language
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(c => c.primaryLang === currentFilter);
+      }
+      
+      // Filter by search query
+      if (searchQuery) {
+        filtered = filtered.filter(c => {
+          const profile = c.profiles[currentLang];
+          const searchText = `${profile.name} ${profile.position} ${c.skills.join(' ')}`.toLowerCase();
+          return searchText.includes(searchQuery);
+        });
+      }
+
+      if (countEl) {
+        countEl.textContent = `${filtered.length} ${t('resultsFound')}`;
+      }
+      
+      container.innerHTML = filtered.map(candidate => {
+        const profile = candidate.profiles[currentLang];
+        return `
+          <div class="candidate-card bg-white rounded-xl shadow-md p-6 border-2 border-gray-100 hover:border-blue-400 hover:shadow-xl">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                  ${profile.name.charAt(0)}
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">${profile.name}</h3>
+                  <p class="text-blue-600 font-medium">${profile.position}</p>
+                  <p class="text-gray-500 text-sm flex items-center gap-1">
+                    <i class="fas fa-map-marker-alt"></i> ${profile.location}
+                  </p>
+                </div>
+              </div>
+              <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-semibold">
+                ${candidate.primaryLang.toUpperCase()}
+              </span>
+            </div>
+            
+            <div class="mb-4">
+              <p class="text-gray-600 flex items-center gap-2">
+                <i class="fas fa-briefcase text-blue-600"></i>
+                <span class="font-semibold">${t('experience')}:</span> ${candidate.experience} ${t('years')}
+              </p>
+            </div>
+            
+            <div class="mb-4">
+              <p class="text-gray-700 font-semibold mb-2 flex items-center gap-2">
+                <i class="fas fa-code text-blue-600"></i> ${t('skills')}:
+              </p>
+              <div class="flex flex-wrap gap-2">
+                ${candidate.skills.map(skill => `
+                  <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">${skill}</span>
+                `).join('')}
+              </div>
+            </div>
+            
+            <div class="mb-6">
+              <p class="text-gray-700 font-semibold mb-2 flex items-center gap-2">
+                <i class="fas fa-language text-blue-600"></i> ${t('languages')}:
+              </p>
+              <div class="flex gap-2">
+                ${candidate.languages.map(lang => `
+                  <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">${lang}</span>
+                `).join('')}
+              </div>
+            </div>
+            
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-semibold transition flex items-center justify-center gap-2">
+              <i class="fas fa-envelope"></i> ${t('contactCandidate')}
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <div class="min-h-screen bg-gray-50 fade-in">
+          <!-- Header -->
+          <header class="fixed w-full bg-white shadow-sm z-50">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+              <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
+              
+              <nav class="hidden md:flex gap-6 text-sm">
+                <a href="index.html" class="text-gray-700 hover:text-blue-600 cursor-pointer font-medium">${t('home')}</a>
+                <a href="#" class="text-blue-600 font-bold">${t('cvDatabaseNav')}</a>
+                <a href="job_list.html" class="text-gray-700 hover:text-blue-600 cursor-pointer font-medium">${t('jobOffers')}</a>
+                <a href="firma.html" class="text-gray-700 hover:text-blue-600 cursor-pointer font-medium">${t('forCompaniesNav')}</a>
+                <a href="kandydatow.html" class="text-gray-700 hover:text-blue-600 cursor-pointer font-medium">${t('forCandidatesNav')}</a>
+                <a href="Overons.html" class="text-gray-700 hover:text-blue-600 cursor-pointer font-medium">${t('aboutUs')}</a>
+                <a href="contactus2.html" class="text-gray-700 hover:text-blue-600 cursor-pointer font-medium">${t('contact')}</a>
+                <a href="ai.html" class="text-gray-700 hover:text-blue-600 cursor-pointer font-medium">${t('ai')}</a>
+              </nav>
+              
+              <div class="flex gap-2">
+                ${['pl', 'nl', 'en', 'cs', 'bg', 'de'].map(l => `
+                  <button onclick="changeLang('${l}')" class="px-3 py-2 rounded-lg text-sm font-semibold transition ${currentLang === l ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}">
+                    ${l.toUpperCase()}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </header>
+
+          <!-- Hero Section -->
+          <section class="pt-32 pb-16 px-4 bg-gradient-to-r from-blue-600 to-indigo-700">
+            <div class="max-w-5xl mx-auto text-center">
+              <h1 class="text-5xl md:text-6xl font-bold text-white mb-4">${t('heroTitle')}</h1>
+              <p class="text-xl text-blue-100 mb-8">${t('heroSubtitle')}</p>
+            </div>
+          </section>
+
+          <!-- Search Section -->
+          <section class="py-10 px-4 bg-white">
+            <div class="max-w-4xl mx-auto">
+              <div class="bg-white rounded-2xl p-8 shadow-lg" style="margin-top: -60px; position: relative; z-index: 10;">
+                <div class="flex items-center gap-4 bg-gray-50 rounded-lg p-4 mb-6">
+                  <i class="fas fa-search text-blue-600 text-2xl"></i>
+                  <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="${t('searchPlaceholder')}" 
+                    class="flex-1 bg-transparent outline-none text-gray-700"
+                    onkeyup="searchCandidates(this.value)"
+                  />
+                  <button class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700">
+                    ${t('searchBtn')}
+                  </button>
+                </div>
+                
+                <div>
+                  <p class="text-gray-600 font-semibold mb-3">${t('filterByLanguage')}:</p>
+                  <div class="flex gap-3 flex-wrap">
+                    ${['all', 'pl', 'nl', 'en', 'cs', 'bg', 'de'].map(f => `
+                      <button 
+                        onclick="filterCandidates('${f}')" 
+                        class="px-4 py-2 rounded-lg font-semibold transition ${currentFilter === f ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}"
+                      >
+                        ${f === 'all' ? t('allLanguages') : f.toUpperCase()}
+                      </button>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Results Count -->
+          <section class="py-4 px-4">
+            <div class="max-w-7xl mx-auto">
+              <p id="results-count" class="text-lg text-gray-600 font-medium"></p>
+            </div>
+          </section>
+
+          <!-- Candidates Grid -->
+          <section class="py-8 px-4 pb-20">
+            <div class="max-w-7xl mx-auto">
+              <div id="candidates-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+          </section>
+
+          <!-- Footer -->
+          <footer class="bg-gray-900 text-gray-300 py-12 px-4">
+            <div class="max-w-6xl mx-auto">
+              <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                  <h3 class="text-white font-bold text-lg mb-4">${t('title')}</h3>
+                  <p class="text-sm">Verbonden met de beste werkgevers in Nederland. Wij matchen jouw talenten met bedrijven die echt bij je passen.</p>
+                </div>
+                <div>
+                  <h3 class="text-white font-bold text-lg mb-4">${t('contact')}</h3>
+                  <p class="text-sm mb-2"><i class="fas fa-envelope mr-2"></i>info@hrconsultingpartner.nl</p>
+                  <p class="text-sm mb-2"><i class="fas fa-phone mr-2"></i>+31 657558110</p>
+                  <p class="text-sm"><i class="fas fa-map-marker-alt mr-2"></i>Amsterdam, Nederland</p>
+                </div>
+                <div>
+                  <h3 class="text-white font-bold text-lg mb-4">Social Media</h3>
+                  <div class="flex gap-4">
+                    <a href="https://facebook.com" target="_blank" class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition">
+                      <i class="fab fa-facebook-f text-white"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition">
+                      <i class="fab fa-linkedin-in text-white"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition">
+                      <i class="fab fa-instagram text-white"></i>
+                    </a>
+                    <a href="https://twitter.com" target="_blank" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition">
+                      <i class="fab fa-twitter text-white"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="border-t border-gray-700 pt-8 text-center">
+                <p class="text-sm">&copy; 2025 HR Consulting Partner. All rights reserved.</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+      `;
+      renderCandidates();
+    }
+
+    render();
+  </script>
+</body>
+</html>

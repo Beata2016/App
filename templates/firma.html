@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voor Bedrijven - HR Partner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-white">
+  <div id="app"></div>
+
+  <script>
+    const translations = {
+      pl: {
+        title: 'HR Partner',
+        forCandidates: 'Dla Kandydatów',
+        forCompanies: 'Dla Firm',
+        aboutUs: 'O Nas',
+        contact: 'Kontakt',
+        heroTitle: 'Znajdź idealnego kandydata',
+        heroSub: 'Dostęp do naszej anonimowej bazy wykwalifikowanych kandydatów. Filtruj po branży, poziomie i dostępności.',
+        searchCandidates: 'Szukaj kandydatów',
+        search: 'Szukaj po branży, poziomie lub lokalizacji...',
+        searchBtn: 'Szukaj',
+        sector: 'Branża',
+        allSectors: 'Wszystkie branże',
+        noResults: 'Nie znaleziono kandydatów',
+        contactCandidate: 'Skontaktuj się',
+        whyChooseUs: 'Dlaczego HR Partner?',
+        anonymousDatabase: 'Anonimowa baza kandydatów',
+        anonymousDatabaseDesc: 'Wszyscy kandydaci są zgłaszani anonimowo. Dane osobowe udostępniane po zainteresowaniu.',
+        easyFiltering: 'Łatwe filtrowanie',
+        easyFilteringDesc: 'Filtruj po branży, poziomie, językach i dostępności.',
+        fastMatching: 'Szybkie dopasowanie',
+        fastMatchingDesc: 'Średnio 24 godziny od zainteresowania do kontaktu.',
+        activeCandidates: '250+',
+        activeCandidatesLabel: 'Aktywni kandydaci',
+        successfulPlacements: '50+',
+        successfulPlacementsLabel: 'Pomyślne dopasowania',
+        sectors: ['IT', 'Marketing', 'HR', 'Budownictwo', 'Sprzedaż', 'Logistyka', 'Finanse', 'Medycyna', 'Administracja', 'Technika', 'Produkcja', 'Ogrodnictwo', 'Służba Zdrowia']
+      },
+      nl: {
+        title: 'HR Partner',
+        forCandidates: 'Voor Kandidaten',
+        forCompanies: 'Voor Bedrijven',
+        aboutUs: 'Over Ons',
+        contact: 'Contact',
+        heroTitle: 'Vind de perfecte kandidaat',
+        heroSub: 'Toegang tot onze anonieme database van gekwalificeerde kandidaten. Filter op sector, niveau en beschikbaarheid.',
+        searchCandidates: 'Kandidaten zoeken',
+        search: 'Zoek op sector, niveau of locatie...',
+        searchBtn: 'Zoeken',
+        sector: 'Sector',
+        allSectors: 'Alle sectoren',
+        noResults: 'Geen kandidaten gevonden',
+        contactCandidate: 'Contact opnemen',
+        whyChooseUs: 'Waarom HR Partner?',
+        anonymousDatabase: 'Anonieme kandidatenDatabase',
+        anonymousDatabaseDesc: 'Alle kandidaten zijn anoniem gerapporteerd. Persoonlijke gegevens gedeeld na interesse.',
+        easyFiltering: 'Gemakkelijk filteren',
+        easyFilteringDesc: 'Filter op sector, niveau, talen en beschikbaarheid.',
+        fastMatching: 'Snel Match',
+        fastMatchingDesc: 'Gemiddeld 24 uur van intresse tot contact.',
+        activeCandidates: '250+',
+        activeCandidatesLabel: 'Actieve kandidaten',
+        successfulPlacements: '50+',
+        successfulPlacementsLabel: 'Succesvolle matches',
+        sectors: ['IT', 'Marketing', 'HR', 'Bouw', 'Verkoop', 'Logistiek', 'Financiën', 'Administratie', 'Techniek', 'Productie', 'Tuinbouw', 'Gezondheidszorg']
+      },
+      en: {
+        title: 'HR Partner',
+        forCandidates: 'For Candidates',
+        forCompanies: 'For Companies',
+        aboutUs: 'About Us',
+        contact: 'Contact',
+        heroTitle: 'Find the perfect candidate',
+        heroSub: 'Access our anonymous database of qualified candidates. Filter by sector, level and availability.',
+        searchCandidates: 'Search Candidates',
+        search: 'Search by sector, level or location...',
+        searchBtn: 'Search',
+        sector: 'Sector',
+        allSectors: 'All sectors',
+        noResults: 'No candidates found',
+        contactCandidate: 'Contact',
+        whyChooseUs: 'Why HR Partner?',
+        anonymousDatabase: 'Anonymous Candidate Database',
+        anonymousDatabaseDesc: 'All candidates are reported anonymously. Personal data shared after interest.',
+        easyFiltering: 'Easy Filtering',
+        easyFilteringDesc: 'Filter by sector, level, languages and availability.',
+        fastMatching: 'Fast Matching',
+        fastMatchingDesc: 'Average 24 hours from interest to contact.',
+        activeCandidates: '250+',
+        activeCandidatesLabel: 'Active candidates',
+        successfulPlacements: '50+',
+        successfulPlacementsLabel: 'Successful matches',
+        sectors: ['IT', 'Marketing', 'HR', 'Construction', 'Sales', 'Logistics', 'Finance', 'Medical', 'Administration', 'Engineering', 'Production', 'Horticulture', 'Healthcare']
+      },
+      cs: {
+        title: 'HR Partner',
+        forCandidates: 'Pro kandidáty',
+        forCompanies: 'Pro společnosti',
+        aboutUs: 'O nás',
+        contact: 'Kontakt',
+        heroTitle: 'Najděte ideálního kandidáta',
+        heroSub: 'Přístup k naší anonymní databázi kvalifikovaných kandidátů. Filtrujte podle sektoru, úrovně a dostupnosti.',
+        searchCandidates: 'Hledat kandidáty',
+        search: 'Vyhledejte podle sektoru, úrovně nebo lokality...',
+        searchBtn: 'Hledat',
+        sector: 'Sektor',
+        allSectors: 'Všechny sektory',
+        noResults: 'Žádní kandidáti nenalezeni',
+        contactCandidate: 'Kontaktujte',
+        whyChooseUs: 'Proč HR Partner?',
+        anonymousDatabase: 'Anonymní databáze kandidátů',
+        anonymousDatabaseDesc: 'Všichni kandidáti jsou hlášeni anonymně. Osobní údaje sdíleny po zájmu.',
+        easyFiltering: 'Snadné filtrování',
+        easyFilteringDesc: 'Filtrujte podle sektoru, úrovně, jazyků a dostupnosti.',
+        fastMatching: 'Rychlé párování',
+        fastMatchingDesc: 'Průměrně 24 hodin od zájmu ke kontaktu.',
+        activeCandidates: '250+',
+        activeCandidatesLabel: 'Aktivní kandidáti',
+        successfulPlacements: '50+',
+        successfulPlacementsLabel: 'Úspěšná spárování',
+        sectors: ['IT', 'Marketing', 'HR', 'Stavebnictví', 'Prodej', 'Logistika', 'Finance', 'Medicína', 'Administrativa', 'Inženýrství', 'Výroba', 'Zahradnictví', 'Zdravotnictví']
+      },
+      bg: {
+        title: 'HR Partner',
+        forCandidates: 'За кандидати',
+        forCompanies: 'За компании',
+        aboutUs: 'За нас',
+        contact: 'Контакт',
+        heroTitle: 'Намерете идеалния кандидат',
+        heroSub: 'Достъп до нашата анонимна база данни на квалифицирани кандидати. Филтрирайте по сектор, ниво и наличност.',
+        searchCandidates: 'Търсене на кандидати',
+        search: 'Търсете по сектор, ниво или локация...',
+        searchBtn: 'Търсене',
+        sector: 'Сектор',
+        allSectors: 'Всички сектори',
+        noResults: 'Не са намерени кандидати',
+        contactCandidate: 'Контактирайте',
+        whyChooseUs: 'Защо HR Partner?',
+        anonymousDatabase: 'Анонимна база данни на кандидати',
+        anonymousDatabaseDesc: 'Всички кандидати се докладват анонимно. Лични данни се споделят след интерес.',
+        easyFiltering: 'Лесно филтриране',
+        easyFilteringDesc: 'Филтрирайте по сектор, ниво, езици и наличност.',
+        fastMatching: 'Бързо намаляване',
+        fastMatchingDesc: 'Средно 24 часа от интерес до контакт.',
+        activeCandidates: '250+',
+        activeCandidatesLabel: 'Активни кандидати',
+        successfulPlacements: '50+',
+        successfulPlacementsLabel: 'Успешни съответствия',
+        sectors: ['IT', 'Маркетинг', 'HR', 'Строителство', 'Продажби', 'Логистика', 'Финанси', 'Медицина', 'Администрация', 'Инженерство', 'Производство', 'Градинарство', 'Здравеопазване']
+      }
+    };
+
+    let currentLang = 'nl';
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    function t(key) { return translations[currentLang][key] || ''; }
+    function changeLang(lang) { currentLang = lang; render(); }
+    function filterBySector(sector) { currentFilter = sector; renderCandidates(); }
+    function setSearchQuery(query) { searchQuery = query.toLowerCase(); renderCandidates(); }
+
+    function renderCandidates() {
+      const container = document.getElementById('candidates-container');
+      let url = `/api/candidates/search?q=${encodeURIComponent(searchQuery)}&sector=${currentFilter === 'all' ? 'all' : currentFilter}`;
+      
+      fetch(url)
+        .then(r => r.json())
+        .then(data => {
+          if (data.count === 0) {
+            container.innerHTML = `<div class="col-span-full text-center py-12 text-gray-500"><i class="fas fa-search text-4xl mb-4"></i><p>${t('noResults')}</p></div>`;
+            return;
+          }
+          
+          container.innerHTML = data.data.map(candidate => `
+            <div class="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <h3 class="text-lg font-bold text-gray-900">Kandidaat #${candidate.id}</h3>
+                  <p class="text-sm text-blue-600 font-semibold">${candidate.sector}</p>
+                </div>
+                <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold">${candidate.level}</span>
+              </div>
+              <div class="space-y-3">
+                <p class="text-gray-600"><i class="fas fa-map-marker-alt text-red-500 mr-2"></i>${candidate.location}</p>
+                <p class="text-gray-600"><i class="fas fa-clock text-orange-500 mr-2"></i>${candidate.availability}</p>
+                <p class="text-gray-600"><i class="fas fa-language text-purple-500 mr-2"></i>${candidate.languages.join(', ')}</p>
+              </div>
+              <button class="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold transition">${t('contactCandidate')}</button>
+            </div>
+          `).join('');
+        });
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      const sectors = t('sectors');
+      
+      app.innerHTML = `
+        <div class="min-h-screen bg-white fade-in">
+          <header class="fixed w-full bg-white shadow-sm z-50">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+              <a href="index.html" class="text-2xl font-bold text-blue-600">${t('title')}</a>
+              <nav class="hidden md:flex gap-8 text-sm">
+                 <nav class="hidden md:flex gap-8 text-sm">
+                            <a href="index.html" class="text-gray-700 hover:text-blue-600 cursor-pointer">${t('home')}</a>
+                            <a href="job_list.html" class="text-gray-700 hover:text-blue-600 cursor-pointer">${t('jobListings')}</a>
+                            <a href="cv_database.html" class="text-gray-700 hover:text-blue-600 cursor-pointer">${t('cvDatabase')}</a>
+                            <a href="overons.html" class="text-gray-700 hover:text-blue-600 cursor-pointer">${t('aboutUs')}</a>
+                            <a href="contactus2.html" class="text-gray-700 hover:text-blue-600 cursor-pointer">${t('contact')}</a>
+                          </nav>
+                              </nav>
+              <div class="flex gap-2">
+                ${['pl', 'nl', 'en', 'cs', 'bg'].map(l => `<button onclick="changeLang('${l}')" class="px-3 py-2 rounded-lg text-sm font-semibold transition ${currentLang === l ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${l.toUpperCase()}</button>`).join('')}
+              </div>
+            </div>
+          </header>
+
+          <section class="pt-32 pb-20 px-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+            <div class="max-w-5xl mx-auto text-center">
+              <h1 class="text-5xl md:text-6xl font-bold mb-6">${t('heroTitle')}</h1>
+              <p class="text-xl md:text-2xl text-blue-100">${t('heroSub')}</p>
+            </div>
+          </section>
+
+          <section class="py-16 px-4 bg-gray-50">
+            <div class="max-w-4xl mx-auto">
+              <div class="bg-white rounded-2xl p-8 shadow-lg">
+                <div class="flex flex-col md:flex-row items-stretch gap-4 mb-6">
+                  <div class="flex items-center flex-1 bg-gray-50 rounded-lg px-4">
+                    <i class="fas fa-search text-blue-600 text-xl"></i>
+                    <input 
+                      type="text" 
+                      id="searchInput"
+                      placeholder="${t('search')}" 
+                      onkeyup="setSearchQuery(this.value)"
+                      class="flex-1 bg-transparent outline-none text-gray-700 py-4 px-4" 
+                    />
+                  </div>
+                  <button class="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition">${t('searchBtn')}</button>
+                </div>
+                
+                <div class="flex gap-3 flex-wrap">
+                  ${['all', ...sectors].map(s => `
+                    <button 
+                      onclick="filterBySector('${s}')" 
+                      class="px-4 py-2 rounded-lg font-semibold transition ${currentFilter === s ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}"
+                    >
+                      ${s === 'all' ? t('allSectors') : s}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="py-20 px-4">
+            <div class="max-w-6xl mx-auto">
+              <h2 class="text-4xl font-bold text-center mb-12">${t('searchCandidates')}</h2>
+              <div id="candidates-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+          </section>
+
+          <section class="py-20 px-4 bg-blue-50">
+            <div class="max-w-6xl mx-auto">
+              <h2 class="text-4xl font-bold text-center mb-16">${t('whyChooseUs')}</h2>
+              <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg p-8 shadow">
+                  <i class="fas fa-user-secret text-blue-600 text-4xl mb-6"></i>
+                  <h3 class="text-xl font-bold mb-4">${t('anonymousDatabase')}</h3>
+                  <p class="text-gray-600">${t('anonymousDatabaseDesc')}</p>
+                </div>
+                <div class="bg-white rounded-lg p-8 shadow">
+                  <i class="fas fa-filter text-indigo-600 text-4xl mb-6"></i>
+                  <h3 class="text-xl font-bold mb-4">${t('easyFiltering')}</h3>
+                  <p class="text-gray-600">${t('easyFilteringDesc')}</p>
+                </div>
+                <div class="bg-white rounded-lg p-8 shadow">
+                  <i class="fas fa-bolt text-yellow-600 text-4xl mb-6"></i>
+                  <h3 class="text-xl font-bold mb-4">${t('fastMatching')}</h3>
+                  <p class="text-gray-600">${t('fastMatchingDesc')}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="py-20 px-4 bg-gray-900 text-white">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 text-center">
+              <div>
+                <div class="text-5xl font-bold text-blue-400 mb-2">${t('activeCandidates')}</div>
+                <p class="text-gray-300">${t('activeCandidatesLabel')}</p>
+              </div>
+              <div>
+                <div class="text-5xl font-bold text-blue-400 mb-2">${t('successfulPlacements')}</div>
+                <p class="text-gray-300">${t('successfulPlacementsLabel')}</p>
+              </div>
+            </div>
+          </section>
+
+          <footer class="bg-gray-900 text-gray-300 py-12 px-4">
+            <div class="max-w-6xl mx-auto text-center">
+              <p>&copy; 2025 HR Consulting Partner.</p>
+            </div>
+          </footer>
+        </div>
+      `;
+      renderCandidates();
+    }
+
+    render();
+  </script>
+</body>
+</html>

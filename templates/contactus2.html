@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Partner - Kontakt</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tawk.to Live Chat -->
+  <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/YOUR_TAWK_ID/default';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+    })();
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+
+<body class="bg-white">
+  <div id="app"></div>
+
+  <script>
+    const translations = {
+      pl: {
+        title: 'HR Partner',
+        contact: 'Kontakt',
+        address: 'Adres',
+        phone: 'Telefon',
+        email: 'E-mail',
+        submit: 'Wyślij',
+        forCandidates: 'Dla Kandydatów',
+        forCompanies: 'Dla Firm',
+        aboutUs: 'O Nas',
+        home: 'Strona Główna',
+        jobListings: 'Ogłoszenia Pracy',
+        cvDatabase: 'Baza danych CV',
+        forCompaniesNav: 'Dla Firm',
+        forCandidatesNav: 'Dla Kandydatów',
+        ai: 'AI Rekrutacja',
+        contactTitle: 'Skontaktuj się z nami',
+        contactSubtitle: 'Jesteśmy tutaj, aby Ci pomóc. Wypełnij formularz lub skontaktuj się z nami bezpośrednio.',
+        nameLabel: 'Imię i nazwisko',
+        emailLabel: 'Adres e-mail',
+        messageLabel: 'Twoja wiadomość',
+        sendingMessage: 'Wysyłanie...',
+        successMessage: 'Dziękujemy! Wiadomość została wysłana.',
+        errorMessage: 'Przepraszamy, wystąpił błąd. Spróbuj ponownie.',
+        contactInfo: 'Informacje kontaktowe',
+        workingHours: 'Godziny pracy',
+        workingHoursText: 'Poniedziałek - Piątek: 9:00 - 17:00'
+      },
+      nl: {
+        title: 'HR Partner',
+        contact: 'Contact',
+        address: 'Adres',
+        phone: 'Telefoon',
+        email: 'E-mail',
+        submit: 'Verzenden',
+        forCandidates: 'Voor Kandidaten',
+        forCompanies: 'Voor Bedrijven',
+        aboutUs: 'Over Ons',
+        home: 'Home',
+        jobListings: 'Vacatures',
+        cvDatabase: 'CV Database',
+        forCompaniesNav: 'Voor Bedrijven',
+        forCandidatesNav: 'Voor Kandidaten',
+        ai: 'AI Werving',
+        contactTitle: 'Neem contact met ons op',
+        contactSubtitle: 'We zijn er om je te helpen. Vul het formulier in of neem direct contact met ons op.',
+        nameLabel: 'Naam',
+        emailLabel: 'E-mailadres',
+        messageLabel: 'Uw bericht',
+        sendingMessage: 'Verzenden...',
+        successMessage: 'Bedankt! Uw bericht is verzonden.',
+        errorMessage: 'Sorry, er is een fout opgetreden. Probeer het opnieuw.',
+        contactInfo: 'Contactinformatie',
+        workingHours: 'Openingstijden',
+        workingHoursText: 'Maandag - Vrijdag: 9:00 - 17:00'
+      },
+      en: {
+        title: 'HR Partner',
+        contact: 'Contact',
+        address: 'Address',
+        phone: 'Phone',
+        email: 'Email',
+        submit: 'Submit',
+        forCandidates: 'For Candidates',
+        forCompanies: 'For Companies',
+        aboutUs: 'About Us',
+        home: 'Home',
+        jobListings: 'Job Listings',
+        cvDatabase: 'CV Database',
+        forCompaniesNav: 'For Companies',
+        forCandidatesNav: 'For Candidates',
+        ai: 'AI Recruitment',
+        contactTitle: 'Get in touch with us',
+        contactSubtitle: 'We are here to help you. Fill out the form or contact us directly.',
+        nameLabel: 'Full name',
+        emailLabel: 'Email address',
+        messageLabel: 'Your message',
+        sendingMessage: 'Sending...',
+        successMessage: 'Thank you! Your message has been sent.',
+        errorMessage: 'Sorry, an error occurred. Please try again.',
+        contactInfo: 'Contact Information',
+        workingHours: 'Working Hours',
+        workingHoursText: 'Monday - Friday: 9:00 - 17:00'
+      },
+      cs: {
+        title: 'HR Partner',
+        contact: 'Kontakt',
+        address: 'Adresa',
+        phone: 'Telefon',
+        email: 'E-mail',
+        submit: 'Odeslat',
+        forCandidates: 'Pro Kandidáty',
+        forCompanies: 'Pro Firmy',
+        aboutUs: 'O Nás',
+        home: 'Domů',
+        jobListings: 'Nabídky práce',
+        cvDatabase: 'Databáze CV',
+        forCompaniesNav: 'Pro společnosti',
+        forCandidatesNav: 'Pro kandidáty',
+        ai: 'AI Nábor',
+        contactTitle: 'Kontaktujte nás',
+        contactSubtitle: 'Jsme tu, abychom vám pomohli. Vyplňte formulář nebo nás kontaktujte přímo.',
+        nameLabel: 'Jméno a příjmení',
+        emailLabel: 'E-mailová adresa',
+        messageLabel: 'Vaše zpráva',
+        sendingMessage: 'Odesílání...',
+        successMessage: 'Děkujeme! Vaše zpráva byla odeslána.',
+        errorMessage: 'Omlouváme se, došlo k chybě. Zkuste to prosím znovu.',
+        contactInfo: 'Kontaktní informace',
+        workingHours: 'Pracovní doba',
+        workingHoursText: 'Pondělí - Pátek: 9:00 - 17:00'
+      },
+      bg: {
+        title: 'HR Partner',
+        contact: 'Контакт',
+        address: 'Адрес',
+        phone: 'Телефон',
+        email: 'Имейл',
+        submit: 'Изпрати',
+        forCandidates: 'За Кандидати',
+        forCompanies: 'За Фирми',
+        aboutUs: 'За Нас',
+        home: 'Начало',
+        jobListings: 'Работни места',
+        cvDatabase: 'База данни CV',
+        forCompaniesNav: 'За компании',
+        forCandidatesNav: 'За кандидати',
+        ai: 'AI Наемане',
+        contactTitle: 'Свържете се с нас',
+        contactSubtitle: 'Ние сме тук, за да ви помогнем. Попълнете формуляра или се свържете с нас директно.',
+        nameLabel: 'Име и фамилия',
+        emailLabel: 'Имейл адрес',
+        messageLabel: 'Вашето съобщение',
+        sendingMessage: 'Изпращане...',
+        successMessage: 'Благодарим! Вашето съобщение е изпратено.',
+        errorMessage: 'Съжаляваме, възникна грешка. Моля, опитайте отново.',
+        contactInfo: 'Информация за контакт',
+        workingHours: 'Работно време',
+        workingHoursText: 'Понеделник - Петък: 9:00 - 17:00'
+      }
+    };
+
+    let currentLang = localStorage.getItem('hrPartnerLang') || 'nl';
+
+    function t(key) {
+      return translations[currentLang][key] || '';
+    }
+
+    function changeLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('hrPartnerLang', lang);
+      render();
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      
+      submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>${t('sendingMessage')}`;
+      submitBtn.disabled = true;
+
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message')
+      };
+
+      // Wysyłanie emaila przez mailto (otwiera klienta email)
+      const subject = encodeURIComponent(`Kontakt z ${data.name}`);
+      const body = encodeURIComponent(`Imię: ${data.name}\nEmail: ${data.email}\n\nWiadomość:\n${data.message}`);
+      window.location.href = `mailto:info@hrconsultingpartner.nl?subject=${subject}&body=${body}`;
+
+      // Resetowanie formularza
+      setTimeout(() => {
+        form.reset();
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+        alert(t('successMessage'));
+      }, 1000);
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <div class="min-h-screen bg-white fade-in">
+          <header class="fixed w-full bg-white shadow-sm z-50">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+              <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
+              
+             
+               <nav class="flex gap-3 text-sm flex-wrap">
+    <a href="/" class="hover:text-blue-600 transition font-medium">🏠 Home</a>
+    <a href="/baza-danych/" class="hover:text-blue-600 transition font-medium">💼 CV Database</a>
+    <a href="/ogloszenia/" class="hover:text-blue-600 transition font-medium">📋 Vacatures</a>
+    <a href="/firma/" class="hover:text-blue-600 transition font-medium">🏢 Voor bedrijven</a>
+    <a href="/o-nas/" class="hover:text-blue-600 transition font-medium">👥 Over ons</a>
+    <a href="/kontakt/" class="hover:text-blue-600 transition font-medium">📧 Contact</a>
+    <a href="/ogloszenia/ai-chat/" class="hover:text-blue-600 transition font-medium">🤖 AI Chat</a>
+</nav>
+
+
+
+
+              </nav>
+              
+              <div class="flex gap-2">
+                ${['pl', 'nl', 'en', 'cs', 'bg'].map(l => `
+                  <button onclick="changeLang('${l}')" class="px-3 py-2 rounded-lg text-sm font-semibold transition ${currentLang === l ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}">
+                    ${l.toUpperCase()}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </header>
+
+          <section class="pt-32 pb-20 px-4" style="background-image: url('Foto12.jpg'); background-size: cover; background-position: center; background-attachment: fixed; height: 400px;">
+            <div class="max-w-5xl mx-auto text-center h-full flex flex-col justify-center">
+              <h1 class="text-5xl md:text-6xl font-bold text-white mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${t('contactTitle')}</h1>
+              <p class="text-xl text-white" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">${t('contactSubtitle')}</p>
+            </div>
+          </section>
+
+          <main class="py-16 px-4">
+            <div class="max-w-7xl mx-auto">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Formularz kontaktowy -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 border-2 border-gray-100">
+                  <h2 class="text-3xl font-bold mb-6 text-gray-900">${t('contact')}</h2>
+                  <form onsubmit="handleSubmit(event)" class="space-y-6">
+                    <div>
+                      <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">${t('nameLabel')}</label>
+                      <input type="text" id="name" name="name" required 
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                      <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">${t('emailLabel')}</label>
+                      <input type="email" id="email" name="email" required 
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                      <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">${t('messageLabel')}</label>
+                      <textarea id="message" name="message" rows="5" required 
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+                    </div>
+                    <button type="submit" 
+                      class="w-full py-4 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold text-lg">
+                      <i class="fas fa-paper-plane mr-2"></i>${t('submit')}
+                    </button>
+                  </form>
+                </div>
+
+                <!-- Informacje kontaktowe -->
+                <div>
+                  <div class="bg-blue-50 rounded-2xl shadow-lg p-8 border-2 border-blue-200 mb-6">
+                    <h2 class="text-3xl font-bold mb-6 text-gray-900">${t('contactInfo')}</h2>
+                    <div class="space-y-6">
+                      <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                          <i class="fas fa-map-marker-alt text-white text-xl"></i>
+                        </div>
+                        <div>
+                          <h3 class="font-semibold text-gray-900 mb-1">${t('address')}</h3>
+                          <p class="text-gray-700">Voorbeeldstraat 12<br>1234 AB Amsterdam<br>Nederland</p>
+                        </div>
+                      </div>
+                      <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                          <i class="fas fa-phone-alt text-white text-xl"></i>
+                        </div>
+                        <div>
+                          <h3 class="font-semibold text-gray-900 mb-1">${t('phone')}</h3>
+                          <p class="text-gray-700"><a href="tel:+31201234567" class="hover:text-blue-600">+31 20 123 4567</a></p>
+                        </div>
+                      </div>
+                      <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                          <i class="fas fa-envelope text-white text-xl"></i>
+                        </div>
+                        <div>
+                          <h3 class="font-semibold text-gray-900 mb-1">${t('email')}</h3>
+                          <p class="text-gray-700"><a href="mailto:info@hrconsultingpartner.nl" class="hover:text-blue-600">info@hrconsultingpartner.nl</a></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bg-indigo-50 rounded-2xl shadow-lg p-8 border-2 border-indigo-200">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-900">${t('workingHours')}</h3>
+                    <p class="text-gray-700 text-lg">${t('workingHoursText')}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          <footer class="bg-gray-900 text-gray-300 py-12 px-4">
+            <div class="max-w-6xl mx-auto">
+              <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                  <h3 class="text-white font-bold text-lg mb-4">${t('title')}</h3>
+                  <p class="text-sm">Połączeni z najlepszymi pracodawcami w Holandii.</p>
+                </div>
+                <div>
+                  <h3 class="text-white font-bold text-lg mb-4">${t('contact')}</h3>
+                  <p class="text-sm mb-2"><i class="fas fa-envelope mr-2"></i>info@hrconsultingpartner.nl</p>
+                  <p class="text-sm mb-2"><i class="fas fa-phone mr-2"></i>+31 20 123 4567</p>
+                  <p class="text-sm"><i class="fas fa-map-marker-alt mr-2"></i>Amsterdam, Nederland</p>
+                </div>
+                <div>
+                  <h3 class="text-white font-bold text-lg mb-4">Social Media</h3>
+                  <div class="flex gap-4">
+                    <a href="https://facebook.com" target="_blank" class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition">
+                      <i class="fab fa-facebook-f text-white"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition">
+                      <i class="fab fa-linkedin-in text-white"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition">
+                      <i class="fab fa-instagram text-white"></i>
+                    </a>
+                    <a href="https://twitter.com" target="_blank" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition">
+                      <i class="fab fa-twitter text-white"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="border-t border-gray-700 pt-8 text-center">
+                <p class="text-sm">&copy; 2025 HR Consulting Partner. All rights reserved.</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+      `;
+    }
+
+    window.changeLang = changeLang;
+    window.handleSubmit = handleSubmit;
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Partner - CV & Jobs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .fade-in { animation: fadeIn 0.3s ease-in; }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    .chat-ai { position: fixed; bottom: 20px; right: 20px; z-index: 50; }
+  </style>
+</head>
+<body class="bg-white font-sans">
+
+<div id="app"></div>
+
+<script>
+  // --- TRANSLATIONS ---
+  const translations = {
+    en: { title:'HR Partner', hero:'Find your next opportunity', search:'Search by role, sector, location...', searchBtn:'Search', jobListings:'Job Listings', allSectors:'All Sectors', candidates:'Candidates', contactUs:'Contact Us', home:'Home', forCompanies:'For Companies', forCandidates:'For Candidates', aboutUs:'About Us', ai:'AI Recruitment' },
+    pl: { title:'HR Partner', hero:'Znajdź swoją pracę', search:'Szukaj według stanowiska, branży, lokalizacji...', searchBtn:'Szukaj', jobListings:'Oferty pracy', allSectors:'Wszystkie branże', candidates:'Kandydaci', contactUs:'Kontakt', home:'Strona główna', forCompanies:'Dla Firm', forCandidates:'Dla Kandydatów', aboutUs:'O nas', ai:'AI Rekrutacja' },
+    nl: { title:'HR Partner', hero:'Vind je volgende kans', search:'Zoek op functie, sector, locatie...', searchBtn:'Zoeken', jobListings:'Vacatures', allSectors:'Alle sectoren', candidates:'Kandidaten', contactUs:'Contact', home:'Home', forCompanies:'Voor Bedrijven', forCandidates:'Voor Kandidaten', aboutUs:'Over Ons', ai:'AI Werving' },
+    cs: { title:'HR Partner', hero:'Najděte svou práci', search:'Hledejte podle role, sektoru, lokality...', searchBtn:'Hledat', jobListings:'Nabídky práce', allSectors:'Všechny obory', candidates:'Kandidáti', contactUs:'Kontaktujte nás', home:'Domů', forCompanies:'Pro společnosti', forCandidates:'Pro kandidáty', aboutUs:'O nás', ai:'AI Nábor' },
+    bg: { title:'HR Partner', hero:'Намерете работа', search:'Търсене по длъжност, сектор, местоположение...', searchBtn:'Търсене', jobListings:'Работни места', allSectors:'Всички сектори', candidates:'Кандидати', contactUs:'Контакт', home:'Начало', forCompanies:'За компании', forCandidates:'За кандидати', aboutUs:'За нас', ai:'AI Наемане' }
+  };
+
+  const sectors = ['Construction','Production','Technical','Logistics','Cleaning','IT','Healthcare','Sales','Marketing','Finance'];
+  const candidatesData = [
+    {name:'Jan Kowalski', position:'Carpenter', age:32, city:'Warsaw', country:'Poland'},
+    {name:'Anna Nowak', position:'Electrician', age:28, city:'Gdansk', country:'Poland'},
+    {name:'Peter Janssen', position:'Driver', age:35, city:'Amsterdam', country:'Netherlands'}
+  ];
+
+  let currentLang = localStorage.getItem('hrPartnerLang') || 'en';
+
+  function t(key){ return translations[currentLang][key] || ''; }
+  function changeLang(lang){ currentLang=lang; localStorage.setItem('hrPartnerLang',lang); render(); }
+
+  function render(){
+    const app = document.getElementById('app');
+    app.innerHTML = `
+      <header class="fixed w-full bg-white shadow z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
+          <nav class="hidden md:flex gap-6 text-sm">
+            <a href="#" class="hover:text-blue-600 font-medium">${t('home')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('forCompanies')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('forCandidates')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('aboutUs')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('contactUs')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('ai')}</a>
+          </nav>
+          <div class="flex gap-2">
+            ${['pl','nl','en','cs','bg'].map(l=>`<button onclick="changeLang('${l}')" class="px-3 py-2 rounded-lg font-semibold ${currentLang===l?'bg-blue-600 text-white':'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${l.toUpperCase()}</button>`).join('')}
+          </div>
+        </div>
+      </header>
+
+      <section class="pt-28 pb-16 px-4 bg-gray-50">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">${t('hero')}</h1>
+          <div class="flex justify-center mt-6 gap-2">
+            <input type="text" placeholder="${t('search')}" class="border-2 border-gray-300 rounded-l-lg px-4 py-2 w-2/3 outline-none"/>
+            <button class="bg-blue-600 text-white px-6 py-2 rounded-r-lg hover:bg-blue-700">${t('searchBtn')}</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16 px-4 bg-gray-100">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-3xl font-bold mb-8 text-center">Sectors</h2>
+          <div class="flex flex-wrap justify-center gap-3">
+            ${sectors.map(s=>`<button class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-blue-100 hover:text-blue-800 font-medium">${s}</button>`).join('')}
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-3xl font-bold mb-8 text-center">${t('candidates')}</h2>
+          <div class="grid md:grid-cols-3 gap-6">
+            ${candidatesData.map(c=>`
+              <div class="border border-gray-200 p-6 rounded-lg hover:shadow-md transition">
+                <div class="text-xl font-bold text-blue-600 mb-2">${c.name}</div>
+                <div class="text-gray-700 mb-1">${c.position}</div>
+                <div class="text-gray-500 text-sm">${c.city}, ${c.country}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
+
+      <div class="chat-ai">
+        <button class="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700">
+          <i class="fas fa-robot"></i>
+        </button>
+      </div>
+
+      <footer class="bg-gray-900 text-white mt-20">
+        <div class="max-w-7xl mx-auto px-4 py-12 flex flex-col md:flex-row justify-between">
+          <div>
+            <div class="text-xl font-bold mb-4">${t('title')}</div>
+            <p class="text-gray-400 text-sm">Connecting talents with top employers across Europe.</p>
+          </div>
+          <div class="flex gap-3 mt-6 md:mt-0">
+            <a href="https://linkedin.com" target="_blank" class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://instagram.com" target="_blank" class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com" target="_blank" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="border-t border-gray-700 text-center py-6">
+          <p class="text-sm">&copy; 2025 HR Consulting Partner. All rights reserved.</p>
+        </div>
+      </footer>
+    `;
+  }
+
+  render();
+</script>
+
+</body>
+</html>
+

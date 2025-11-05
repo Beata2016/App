@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Partner - Kandydaci</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .availability { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+    .available { background-color: #22c55e; } /* zielony */
+    .part-time { background-color: #f59e0b; } /* pomarańczowy */
+    .not-available { background-color: #ef4444; } /* czerwony */
+  </style>
+</head>
+<body class="bg-gray-50">
+  <header class="bg-blue-700 text-white p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">HR Partner - Kandydaci</h1>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-4">
+    <section class="mb-8">
+      <input type="text" placeholder="Szukaj kandydatów..." id="searchInput" class="w-full p-3 rounded-lg border border-gray-300" />
+    </section>
+
+    <section id="candidatesContainer" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <!-- Kandydaci zostaną wstawieni przez JS -->
+    </section>
+
+    <section class="mt-6 flex justify-center gap-2">
+      <button onclick="changePage(-1)" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Poprzednia</button>
+      <span id="pageInfo" class="px-4 py-2"></span>
+      <button onclick="changePage(1)" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Następna</button>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-gray-200 mt-12 p-6 text-center">
+    <p>&copy; 2025 HR Consulting Partner. All rights reserved.</p>
+    <div class="flex justify-center gap-3 mt-2">
+      <a href="mailto:contact@hrconsultingpartner.nl" class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700">Kontakt</a>
+      <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin text-xl"></i></a>
+      <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram text-xl"></i></a>
+      <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter text-xl"></i></a>
+    </div>
+  </footer>
+
+  <script>
+    const candidates = [
+      { code:'CAND-001', nationality:'PL', age:28, job:'Java Developer', sector:'IT', experience:4, courses:['AWS','React'], languages:{en:true,nl:false,de:false,other:false}, workedIn:{NL:true,EU:false}, availability:'available', avatar:'https://i.pravatar.cc/50?img=1' },
+      { code:'CAND-002', nationality:'NL', age:35, job:'Project Manager', sector:'Construction', experience:8, courses:['PMI','Scrum'], languages:{en:true,nl:true,de:false,other:false}, workedIn:{NL:true,EU:true}, availability:'part-time', avatar:'https://i.pravatar.cc/50?img=2' },
+      { code:'CAND-003', nationality:'DE', age:30, job:'Marketing Specialist', sector:'Marketing', experience:5, courses:['SEO','Google Ads'], languages:{en:true,nl:true,de:true,other:false}, workedIn:{NL:false,EU:true}, availability:'not-available', avatar:'https://i.pravatar.cc/50?img=3' },
+      { code:'CAND-004', nationality:'PL', age:26, job:'Sales Executive', sector:'Sales', experience:3, courses:['Negotiation'], languages:{en:true,nl:false,de:false,other:false}, workedIn:{NL:true,EU:false}, availability:'available', avatar:'https://i.pravatar.cc/50?img=4' },
+      { code:'CAND-005', nationality:'NL', age:40, job:'Business Analyst', sector:'Finance', experience:12, courses:['Excel','Power BI'], languages:{en:true,nl:true,de:false,other:false}, workedIn:{NL:true,EU:true}, availability:'available', avatar:'https://i.pravatar.cc/50?img=5' },
+      { code:'CAND-006', nationality:'PL', age:29, job:'HR Specialist', sector:'HR', experience:6, courses:['Recruitment','Labor Law'], languages:{en:true,nl:false,de:false,other:false}, workedIn:{NL:true,EU:false}, availability:'part-time', avatar:'https://i.pravatar.cc/50?img=6' },
+      { code:'CAND-007', nationality:'BG', age:32, job:'QA Engineer', sector:'IT', experience:7, courses:['Selenium','Jira'], languages:{en:true,nl:false,de:false,other:false}, workedIn:{NL:true,EU:true}, availability:'available', avatar:'https://i.pravatar.cc/50?img=7' },
+      { code:'CAND-008', nationality:'PL', age:24, job:'UI/UX Designer', sector:'IT', experience:2, courses:['Figma','Adobe XD'], languages:{en:true,nl:false,de:false,other:false}, workedIn:{NL:false,EU:false}, availability:'available', avatar:'https://i.pravatar.cc/50?img=8' },
+      { code:'CAND-009', nationality:'DE', age:38, job:'DevOps Engineer', sector:'IT', experience:10, courses:['Docker','Kubernetes'], languages:{en:true,nl:false,de:true,other:false}, workedIn:{NL:true,EU:true}, availability:'not-available', avatar:'https://i.pravatar.cc/50?img=9' },
+      { code:'CAND-010', nationality:'PL', age:27, job:'Content Writer', sector:'Marketing', experience:3, courses:['SEO','Copywriting'], languages:{en:true,nl:false,de:false,other:false}, workedIn:{NL:true,EU:false}, availability:'available', avatar:'https://i.pravatar.cc/50?img=10' },
+      { code:'CAND-011', nationality:'NL', age:31, job:'Accountant', sector:'Finance', experience:7, courses:['Excel','Accounting'], languages:{en:true,nl:true,de:false,other:false}, workedIn:{NL:true,EU:true}, availability:'available', avatar:'https://i.pravatar.cc/50?img=11' },
+      { code:'CAND-012', nationality:'PL', age:29, job:'Frontend Developer', sector:'IT', experience:5, courses:['React','Vue'], languages:{en:true,nl:false,de:false,other:false}, workedIn:{NL:true,EU:false}, availability:'part-time', avatar:'https://i.pravatar.cc/50?img=12' },
+      { code:'CAND-013', nationality:'BG', age:34, job:'Office Manager', sector:'Administration', experience:9, courses:['MS Office'], languages:{en:true,nl:false,de:false,other:false}, workedIn:{NL:false,EU:true}, availability:'available', avatar:'https://i.pravatar.cc/50?img=13' },
+      { code:'CAND-014', nationality:'PL', age:25, job:'Junior Developer', sector:'IT', experience:1, courses:['JavaScript'], languages:{en:true,nl:false,de:false,other:false}, workedIn:{NL:false,EU:false}, availability:'available', avatar:'https://i.pravatar.cc/50?img=14' },
+      { code:'CAND-015', nationality:'DE', age:37, job:'Project Coordinator', sector:'Construction', experience:11, courses:['MS Project'], languages:{en:true,nl:false,de:true,other:false}, workedIn:{NL:true,EU:true}, availability:'not-available', avatar:'https://i.pravatar.cc/50?img=15' },
+    ];
+
+    const candidatesPerPage = 15;
+    let currentPage = 1;
+
+    function renderCandidates() {
+      const container = document.getElementById('candidatesContainer');
+      const start = (currentPage-1)*candidatesPerPage;
+      const end = start + candidatesPerPage;
+      const visible = candidates.slice(start,end);
+
+      container.innerHTML = visible.map(c => `
+        <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition flex flex-col items-start">
+          <div class="flex items-center gap-3 mb-2">
+            <img src="${c.avatar}" alt="Avatar" class="w-12 h-12 rounded-full">
+            <div>
+              <div class="font-semibold">${c.code}</div>
+              <div class="text-sm text-gray-500">${c.nationality}, ${c.age} lat</div>
+            </div>
+            <span class="availability ${c.availability} ml-auto"></span>
+          </div>
+          <div class="mb-1"><strong>Stanowisko:</strong> ${c.job}</div>
+          <div class="mb-1"><strong>Branża:</strong> ${c.sector}</div>
+          <div class="mb-1"><strong>Doświadczenie:</strong> ${c.experience} lat</div>
+          <div class="mb-1"><strong>Kursy:</strong> ${c.courses.join(', ')}</div>
+          <div class="mb-1"><strong>Języki:</strong> 
+            ${Object.entries(c.languages).map(([lang,val]) => val ? lang.toUpperCase() : '').filter(Boolean).join(', ')}
+          </div>
+          <div class="mb-1"><strong>Praca w NL:</strong> ${c.workedIn.NL ? 'Tak' : 'Nie'}, EU: ${c.workedIn.EU ? 'Tak' : 'Nie'}</div>
+          <a href="mailto:contact@hrconsultingpartner.nl" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Kontakt</a>
+        </div>
+      `).join('');
+
+      document.getElementById('pageInfo').innerText = `Strona ${currentPage} z ${Math.ceil(candidates.length/candidatesPerPage)}`;
+    }
+
+    function changePage(direction) {
+      const maxPage = Math.ceil(candidates.length/candidatesPerPage);
+      currentPage += direction;
+      if(currentPage < 1) currentPage = 1;
+      if(currentPage > maxPage) currentPage = maxPage;
+      renderCandidates();
+    }
+
+    document.getElementById('searchInput').addEventListener('input', (e)=>{
+      const val = e.target.value.toLowerCase();
+      const filtered = candidates.filter(c => c.code.toLowerCase().includes(val) || c.job.toLowerCase().includes(val) || c.sector.toLowerCase().includes(val));
+      const container = document.getElementById('candidatesContainer');
+      container.innerHTML = filtered.map(c => `
+        <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition flex flex-col items-start">
+          <div class="flex items-center gap-3 mb-2">
+            <img src="${c.avatar}" alt="Avatar" class="w-12 h-12 rounded-full">
+            <div>
+              <div class="font-semibold">${c.code}</div>
+              <div class="text-sm text-gray-500">${c.nationality}, ${c.age} lat</div>
+            </div>
+            <span class="availability ${c.availability} ml-auto"></span>
+          </div>
+          <div class="mb-1"><strong>Stanowisko:</strong> ${c.job}</div>
+          <div class="mb-1"><strong>Branża:</strong> ${c.sector}</div>
+          <div class="mb-1"><strong>Doświadczenie:</strong> ${c.experience} lat</div>
+          <div class="mb-1"><strong>Kursy:</strong> ${c.courses.join(', ')}</div>
+          <div class="mb-1"><strong>Języki:</strong> 
+            ${Object.entries(c.languages).map(([lang,val]) => val ? lang.toUpperCase() : '').filter(Boolean).join(', ')}
+          </div>
+          <div class="mb-1"><strong>Praca w NL:</strong> ${c.workedIn.NL ? 'Tak' : 'Nie'}, EU: ${c.workedIn.EU ? 'Tak' : 'Nie'}</div>
+          <a href="mailto:contact@hrconsultingpartner.nl" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Kontakt</a>
+        </div>
+      `).join('');
+      document.getElementById('pageInfo').innerText = `Strona 1 z ${Math.ceil(filtered.length/candidatesPerPage)}`;
+    });
+
+    renderCandidates();
+  </script>
+</body>
+</html>

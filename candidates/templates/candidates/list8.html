@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Partner - Kandydaci</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color:#f8f9fa; }
+    .fade-in { animation: fadeIn 0.3s ease-in; }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    .status-dot { width:12px; height:12px; border-radius:50%; display:inline-block; margin-right:6px; }
+    .chat-gpt { position: fixed; bottom: 20px; right: 20px; z-index: 50; width:300px; max-width:90%; background:#fff; border-radius:1rem; box-shadow:0 5px 15px rgba(0,0,0,0.3); padding:1rem; }
+    .chat-messages { height:200px; overflow-y:auto; font-size:0.9rem; margin-bottom:0.5rem; }
+  </style>
+</head>
+<body class="fade-in">
+
+<div id="app"></div>
+
+<script>
+  // --- TRANSLATIONS ---
+  const translations = {
+    pl: { home:'Strona główna', forCompanies:'Dla Firm', forCandidates:'Dla Kandydatów', aboutUs:'O nas', contactUs:'Kontakt', ai:'AI Rekrutacja', search:'Szukaj według stanowiska, branży, lokalizacji...', searchBtn:'Szukaj', jobListings:'Kandydaci', allSectors:'Wszystkie branże' },
+    en: { home:'Home', forCompanies:'For Companies', forCandidates:'For Candidates', aboutUs:'About Us', contactUs:'Contact', ai:'AI Recruitment', search:'Search by role, sector, location...', searchBtn:'Search', jobListings:'Candidates', allSectors:'All Sectors' },
+    nl: { home:'Home', forCompanies:'Voor Bedrijven', forCandidates:'Voor Kandidaten', aboutUs:'Over Ons', contactUs:'Contact', ai:'AI Werving', search:'Zoek op functie, sector, locatie...', searchBtn:'Zoeken', jobListings:'Kandidaten', allSectors:'Alle sectoren' },
+    cs: { home:'Domů', forCompanies:'Pro společnosti', forCandidates:'Pro kandidáty', aboutUs:'O nás', contactUs:'Kontakt', ai:'AI Nábor', search:'Hledejte podle role, sektoru, lokality...', searchBtn:'Hledat', jobListings:'Kandidáti', allSectors:'Všechny obory' },
+    bg: { home:'Начало', forCompanies:'За компании', forCandidates:'За кандидати', aboutUs:'За нас', contactUs:'Контакт', ai:'AI Наемане', search:'Търсене по длъжност, сектор, местоположение...', searchBtn:'Търсене', jobListings:'Кандидати', allSectors:'Всички сектори' }
+  };
+
+  const sectors = ['Construction','Production','Technical','Logistics','Cleaning','IT','Healthcare','Sales','Marketing','Finance'];
+
+  const candidatesData = [
+    {code:'C001', gender:'M', position:'Carpenter', specialty:'Woodwork', age:32, city:'Warsaw', country:'Poland', education:'High School', experience:8, courses:'Safety, Machinery', languages:{english:true, german:false, dutch:true, other:false}, nationality:'Polish', availability:'available', photo:'https://randomuser.me/api/portraits/men/32.jpg'},
+    {code:'C002', gender:'F', position:'Electrician', specialty:'Industrial', age:28, city:'Gdansk', country:'Poland', education:'Bachelor', experience:5, courses:'Electrical Safety', languages:{english:true, german:true, dutch:false, other:false}, nationality:'Polish', availability:'looking', photo:'https://randomuser.me/api/portraits/women/28.jpg'},
+    {code:'C003', gender:'M', position:'Driver', specialty:'Truck', age:35, city:'Amsterdam', country:'Netherlands', education:'High School', experience:10, courses:'Logistics', languages:{english:true, german:false, dutch:true, other:false}, nationality:'Dutch', availability:'not_available', photo:'https://randomuser.me/api/portraits/men/35.jpg'},
+    {code:'C004', gender:'F', position:'Nurse', specialty:'ICU', age:30, city:'Rotterdam', country:'Netherlands', education:'Bachelor', experience:6, courses:'First Aid', languages:{english:true, german:false, dutch:true, other:true}, nationality:'Dutch', availability:'available', photo:'https://randomuser.me/api/portraits/women/30.jpg'},
+    {code:'C005', gender:'M', position:'Welder', specialty:'Metalwork', age:40, city:'Berlin', country:'Germany', education:'High School', experience:15, courses:'Welding Safety', languages:{english:true, german:true, dutch:false, other:false}, nationality:'German', availability:'looking', photo:'https://randomuser.me/api/portraits/men/40.jpg'},
+    {code:'C006', gender:'F', position:'Marketing Specialist', specialty:'Digital', age:27, city:'London', country:'UK', education:'Bachelor', experience:4, courses:'SEO, Social Media', languages:{english:true, german:false, dutch:false, other:false}, nationality:'British', availability:'available', photo:'https://randomuser.me/api/portraits/women/27.jpg'},
+    {code:'C007', gender:'M', position:'IT Support', specialty:'Networking', age:33, city:'Utrecht', country:'Netherlands', education:'Bachelor', experience:9, courses:'Cisco, Security', languages:{english:true, german:false, dutch:true, other:false}, nationality:'Dutch', availability:'not_available', photo:'https://randomuser.me/api/portraits/men/33.jpg'},
+    {code:'C008', gender:'F', position:'Chef', specialty:'Italian Cuisine', age:29, city:'Warsaw', country:'Poland', education:'High School', experience:6, courses:'Culinary', languages:{english:true, german:false, dutch:false, other:true}, nationality:'Polish', availability:'available', photo:'https://randomuser.me/api/portraits/women/29.jpg'}
+  ];
+
+  let currentLang = localStorage.getItem('hrPartnerLang') || 'pl';
+  let currentPage = 1;
+  const itemsPerPage = 4;
+
+  function t(key){ return translations[currentLang][key] || key; }
+  function changeLang(lang){ currentLang=lang; localStorage.setItem('hrPartnerLang',lang); render(); }
+
+  function renderCandidates(){
+    const container = document.getElementById('candidates-container');
+    const start = (currentPage-1)*itemsPerPage;
+    const end = start+itemsPerPage;
+    const pageItems = candidatesData.slice(start,end);
+
+    container.innerHTML = pageItems.map(c=>`
+      <div class="border border-gray-300 rounded-lg p-4 flex gap-4 hover:shadow-md transition bg-white">
+        <img src="${c.photo}" alt="${c.code}" class="w-16 h-16 rounded-full object-cover"/>
+        <div class="flex-1">
+          <div class="flex justify-between items-center mb-1">
+            <span class="font-bold text-blue-600">${c.code}</span>
+            <span class="status-dot ${c.availability==='available'?'bg-green-500':c.availability==='looking'?'bg-orange-500':'bg-red-500'}"></span>
+          </div>
+          <div class="text-gray-700 mb-1">${c.position} - ${c.specialty}</div>
+          <div class="text-gray-500 text-sm">${c.gender==='M'?'Mężczyzna':'Kobieta'}, ${c.age} lat, ${c.city}, ${c.country}</div>
+          <div class="text-gray-500 text-sm mb-1">Wykształcenie: ${c.education} | Doświadczenie: ${c.experience} lat</div>
+          <div class="text-gray-500 text-sm mb-1">Kursy: ${c.courses}</div>
+          <div class="text-gray-500 text-sm mb-1">Języki: 
+            ${Object.entries(c.languages).map(([lang,val])=>val?lang.toUpperCase():'').filter(Boolean).join(', ')}
+          </div>
+          <div class="text-gray-500 text-sm mb-1">Narodowość: ${c.nationality}</div>
+          <a href="mailto:kontakt@hrconsultingpartner.nl" class="inline-block mt-2 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm">Kontakt</a>
+        </div>
+      </div>
+    `).join('');
+
+    const pagination = document.getElementById('pagination');
+    const totalPages = Math.ceil(candidatesData.length/itemsPerPage);
+    pagination.innerHTML = `
+      <div class="flex justify-center gap-2 mt-4">
+        <button ${currentPage===1?'disabled':''} class="px-3 py-1 rounded bg-gray-200 hover:bg-blue-100" onclick="prevPage()">Prev</button>
+        <span class="px-2 py-1">Strona ${currentPage} z ${totalPages}</span>
+        <button ${currentPage===totalPages?'disabled':''} class="px-3 py-1 rounded bg-gray-200 hover:bg-blue-100" onclick="nextPage()">Next</button>
+      </div>
+    `;
+  }
+
+  function prevPage(){ if(currentPage>1){ currentPage--; renderCandidates(); } }
+  function nextPage(){ if(currentPage<Math.ceil(candidatesData.length/itemsPerPage)){ currentPage++; renderCandidates(); } }
+
+  function render(){
+    const app = document.getElementById('app');
+    app.innerHTML = `
+      <header class="fixed w-full bg-white shadow z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div class="text-2xl font-bold text-blue-600">HR Partner</div>
+          <nav class="hidden md:flex gap-6 text-sm">
+            <a href="#" class="hover:text-blue-600 font-medium">${t('home')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('forCompanies')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('forCandidates')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('aboutUs')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('contactUs')}</a>
+            <a href="#" class="hover:text-blue-600 font-medium">${t('ai')}</a>
+          </nav>
+          <div class="flex gap-2">
+            ${['pl','nl','en','cs','bg'].map(l=>`<button onclick="changeLang('${l}')" class="px-3 py-2 rounded-lg font-semibold ${currentLang===l?'bg-blue-600 text-white':'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${l.toUpperCase()}</button>`).join('')}
+          </div>
+        </div>
+      </header>
+
+      <section class="pt-28 pb-8 px-4 bg-gray-50 text-center">
+        <h1 class="text-4xl font-bold mb-4">Znajdź swoją pracę</h1>
+        <div class="flex justify-center gap-2 flex-wrap mt-4">
+          <input type="text" placeholder="${t('search')}" class="border-2 border-gray-300 rounded-l-lg px-4 py-2 w-64 md:w-1/3 outline-none"/>
+          <button class="bg-blue-600 text-white px-6 py-2 rounded-r-lg hover:bg-blue-700">${t('searchBtn')}</button>
+        </div>
+      </section>
+
+      <section class="py-12 px-4 bg-gray-100">
+        <div class="max-w-6xl mx-auto text-center mb-6">
+          <h2 class="text-3xl font-bold mb-4">Sectors</h2>
+          <div class="flex flex-wrap justify-center gap-3">
+            ${sectors.map(s=>`<button class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-blue-100 hover:text-blue-800 font-medium">${s}</button>`).join('')}
+          </div>
+        </div>
+      </section>
+
+      <section class="py-12 px-4 bg-white max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center">${t('jobListings')}</h2>
+        <div id="candidates-container" class="grid md:grid-cols-2 gap-6"></div>
+        <div id="pagination"></div>
+      </section>
+
+      <!-- Chat GPT -->
+      <div class="chat-gpt">
+        <div class="chat-messages" id="chat-messages"></div>
+        <input type="text" id="chat-input" class="w-full border border-gray-300 rounded px-2 py-1" placeholder="Zadaj pytanie..."/>
+        <button class="mt-2 w-full bg-blue-600 text-white rounded py-1 hover:bg-blue-700" onclick="sendMessage()">Wyślij</button>
+      </div>
+
+      <footer class="bg-gray-900 text-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-12 flex flex-col md:flex-row justify-between">
+          <div>
+            <div class="text-xl font-bold mb-4">HR Partner</div>
+            <p class="text-gray-400 text-sm">Connecting talents with top employers across Europe.</p>
+          </div>
+          <div class="flex gap-3 mt-6 md:mt-0">
+            <a href="https://linkedin.com" target="_blank" class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://instagram.com" target="_blank" class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com" target="_blank" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="border-t border-gray-700 text-center py-6">
+          <p class="text-sm">&copy; 2025 HR Consulting Partner. All rights reserved.</p>
+        </div>
+      </footer>
+    `;
+
+    renderCandidates();
+  }
+
+  function sendMessage(){
+    const input = document.getElementById('chat-input');
+    const messages = document.getElementById('chat-messages');
+    if(!input.value) return;
+    messages.innerHTML += `<div class="text-blue-600 mb-1"><strong>Ty:</strong> ${input.value}</div>`;
+    messages.innerHTML += `<div class="text-gray-700 mb-1"><strong>GPT:</strong> Na razie nie mogę odpowiedzieć w pełni, ale pracuję nad tym.</div>`;
+    messages.scrollTop = messages.scrollHeight;
+    input.value='';
+  }
+
+  render();
+</script>
+
+</body>
+</html>

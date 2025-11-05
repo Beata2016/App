@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentDB - Anonymous CV Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+ 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            padding: 6px 14px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .lang-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .lang-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        /* Search Section */
+        .search-section {
+            max-width: 1200px;
+            margin: -40px auto 40px;
+            padding: 0 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 18px 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-hint {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .quick-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quick-filter-btn {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .quick-filter-btn:hover, .quick-filter-btn.active {
+            background: white;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        /* Candidates Section */
+        .candidates-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px 60px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .results-count {
+            color: #667eea;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .candidates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .candidate-card {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .candidate-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .candidate-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            text-transform: uppercase;
+        }
+
+        .candidate-code {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .candidate-position {
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+        }
+
+        .candidate-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .candidate-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            background: #e8ecff;
+            color: #667eea;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .tag.eu {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .tag.nl {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .tag.available {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+            font-size: 1.3em;
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2em;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1em;
+            }
+
+            .search-input-wrapper {
+                flex-direction: column;
+            }
+
+            .candidates-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo" data-i18n="title">TalentDB</div>
+        <div class="language-switcher">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="nl">NL</button>
+            <button class="lang-btn" data-lang="pl">PL</button>
+            <button class="lang-btn" data-lang="de">DE</button>
+            <button class="lang-btn" data-lang="ru">RU</button>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+        <div class="hero-content">
+            <h1 class="hero-title" data-i18n="heroTitle">Find Your Perfect Candidate</h1>
+            <p class="hero-subtitle" data-i18n="heroSubtitle">Anonymous, unbiased talent discovery powered by skills and experience</p>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-card">
+            <div class="search-input-wrapper">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    data-i18n-placeholder="searchPlaceholder"
+                    placeholder="Search by position, city, country, industry...">
+                <button class="search-btn" id="searchBtn" data-i18n="searchBtn">Search</button>
+            </div>
+            <p class="search-hint" data-i18n="searchHint">Examples: carpenter, Poland, Warsaw, production, 5+ years experience</p>
+            <div class="quick-filters">
+                <button class="quick-filter-btn active" data-filter="all" data-i18n="allCandidates">All Candidates</button>
+                <button class="quick-filter-btn" data-filter="available" data-i18n="availableNow">Available Now</button>
+                <button class="quick-filter-btn" data-filter="nl" data-i18n="nlExperience">NL Experience</button>
+                <button class="quick-filter-btn" data-filter="eu" data-i18n="euExperience">EU Experience</button>
+                <button class="quick-filter-btn" data-filter="construction" data-i18n="construction">Construction</button>
+                <button class="quick-filter-btn" data-filter="production" data-i18n="production">Production</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Candidates Section -->
+    <section class="candidates-section">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="candidates">Candidates</h2>
+            <span class="results-count" id="resultsCount">12 results</span>
+        </div>
+        
+        <div class="candidates-grid" id="candidatesGrid">
+            <!-- Candidates will be rendered here -->
+        </div>
+    </section>
+
+    <script>
+        // Sample candidate data (podobne do Twojej bazy)
+        const candidatesData = [
+            {
+                code: "CAND-001",
+                position: "Carpenter / Stolarz",
+                age: 32,
+                country: "Poland",
+                city: "Warsaw",
+                experience: 8,
+                tags: ["Construction", "Carpenter"],
+                available: true,
+                workedInNL: true,
+                workedInEU: true
+            },
+            {
+                code: "CAND-002",
+                position: "Production Worker",
+                age: 28,
+                country: "Poland",
+                city: "Krakow",
+                experience: 5,
+                tags: ["Production"],
+                available: true,
+                workedInNL: false,
+                workedInEU: true
+            },
+            {
+                code: "CAND-003",
+                position: "Mason / Murarz",
+                age: 35,
+                country: "Poland",
+                city: "Gdansk",
+                experience: 10,
+                tags: ["Construction", "Mason"],
+                available: false,
+                workedInNL: true,
+                workedInEU: true
+            },
+            {
+                code: "CAND-004",
+                position: "Electrician / Elektryk",
+                age: 30,
+                country: "Poland",
+                city: "Wroclaw",
+                experience: 7,
+                tags: ["Technical", "Electrician"],
+                available: true,
+                workedInNL: true,
+                workedInEU: true
+            },
+            {
+                code: "CAND-005",
+                position: "Driver / Kierowca",
+                age: 29,
+                country: "Poland",
+                city: "Poznan",
+                experience: 6,
+                tags: ["Logistics", "Driver"],
+                available: true,
+                workedInNL: false,
+                workedInEU: true
+            },
+            {
+                code: "CAND-006",
+                position: "Plumber / Hydraulik",
+                age: 33,
+                country: "Poland",
+                city: "Lodz",
+                experience: 9,
+                tags: ["Construction", "Plumber"],
+                available: false,
+                workedInNL: true,
+                workedInEU: true
+            },
+            {
+                code: "CAND-007",
+                position: "Machine Operator",
+                age: 26,
+                country: "Poland",
+                city: "Katowice",
+                experience: 4,
+                tags: ["Production", "Operator"],
+                available: true,
+                workedInNL: false,
+                workedInEU: false
+            },
+            {
+                code: "CAND-008",
+                position: "Painter / Malarz",
+                age: 31,
+                country: "Poland",
+                city: "Bydgoszcz",
+                experience: 8,
+                tags: ["Construction", "Painter"],
+                available: true,
+                workedInNL: true,
+                workedInEU: true
+            },
+            {
+                code: "CAND-009",
+                position: "Cleaner / Sprzątacz",
+                age: 27,
+                country: "Poland",
+                city: "Lublin",
+                experience: 3,
+                tags: ["Cleaning"],
+                available: true,
+                workedInNL: false,
+                workedInEU: true
+            },
+            {
+                code: "CAND-010",
+                position: "Construction Helper",
+                age: 24,
+                country: "Poland",
+                city: "Szczecin",
+                experience: 2,
+                tags: ["Construction"],
+                available: true,
+                workedInNL: false,
+                workedInEU: false
+            },
+            {
+                code: "CAND-011",
+                position: "Mechanic / Mechanik",
+                age: 34,
+                country: "Poland",
+                city: "Torun",
+                experience: 11,
+                tags: ["Technical", "Mechanic"],
+                available: false,
+                workedInNL: true,
+                workedInEU: true
+            },
+            {
+                code: "CAND-012",
+                position: "Welder / Spawacz",
+                age: 29,
+                country: "Poland",
+                city: "Radom",
+                experience: 6,
+                tags: ["Production", "Technical"],
+                available: true,
+                workedInNL: true,
+                workedInEU: true
+            }
+        ];
+
+        let currentLang = localStorage.getItem('language') || 'en';
+        let filteredCandidates = [...candidatesData];
+
+        // Translations
+        const translations = {
+            en: {
+                title: "TalentDB",
+                heroTitle: "Find Your Perfect Candidate",
+                heroSubtitle: "Anonymous, unbiased talent discovery powered by skills and experience",
+                searchPlaceholder: "Search by position, city, country, industry...",
+                searchHint: "Examples: carpenter, Poland, Warsaw, production, 5+ years experience",
+                searchBtn: "Search",
+                allCandidates: "All Candidates",
+                availableNow: "Available Now",
+                nlExperience: "NL Experience",
+                euExperience: "EU Experience",
+                construction: "Construction",
+                production: "Production",
+                candidates: "Candidates",
+                age: "Age",
+                country: "Country",
+                city: "City",
+                experience: "Exp"
+            },
+            nl: {
+                title: "TalentDB",
+                heroTitle: "Vind Jouw Perfecte Kandidaat",
+                heroSubtitle: "Anonieme, onbevooroordeelde talentontdekking op basis van vaardigheden en ervaring",
+                searchPlaceholder: "Zoek op functie, stad, land, branche...",
+                searchHint: "Voorbeelden: timmerman, Polen, Warschau, productie, 5+ jaar ervaring",
+                searchBtn: "Zoeken",
+                allCandidates: "Alle Kandidaten",
+                availableNow: "Nu Beschikbaar",
+                nlExperience: "NL Ervaring",
+                euExperience: "EU Ervaring",
+                construction: "Bouw",
+                production: "Productie",
+                candidates: "Kandidaten",
+                age: "Leeftijd",
+                country: "Land",
+                city: "Stad",
+                experience: "Erv"
+            },
+            pl: {
+                title: "TalentDB",
+                heroTitle: "Znajdź Idealnego Kandydata",
+                heroSubtitle: "Anonimowe, bezstronne odkrywanie talentów na podstawie umiejętności i doświadczenia",
+                searchPlaceholder: "Szukaj według stanowiska, miasta, kraju, branży...",
+                searchHint: "Przykłady: stolarz, Polska, Warszawa, produkcja, 5+ lat doświadczenia",
+                searchBtn: "Szukaj",
+                allCandidates: "Wszyscy Kandydaci",
+                availableNow: "Dostępni Teraz",
+                nlExperience: "Doświadczenie NL",
+                euExperience: "Doświadczenie EU",
+                construction: "Budownictwo",
+                production: "Produkcja",
+                candidates: "Kandydaci",
+                age: "Wiek",
+                country: "Kraj",
+                city: "Miasto",
+                experience: "Doś"
+            },
+            de: {
+                title: "TalentDB",
+                heroTitle: "Finden Sie Ihren Perfekten Kandidaten",
+                heroSubtitle: "Anonyme, unvoreingenommene Talententdeckung basierend auf Fähigkeiten und Erfahrung",
+                searchPlaceholder: "Suche nach Position, Stadt, Land, Branche...",
+                searchHint: "Beispiele: Zimmermann, Polen, Warschau, Produktion, 5+ Jahre Erfahrung",
+                searchBtn: "Suchen",
+                allCandidates: "Alle Kandidaten",
+                availableNow: "Jetzt Verfügbar",
+                nlExperience: "NL Erfahrung",
+                euExperience: "EU Erfahrung",
+                construction: "Bauwesen",
+                production: "Produktion",
+                candidates: "Kandidaten",
+                age: "Alter",
+                country: "Land",
+                city: "Stadt",
+                experience: "Erf"
+            },
+            ru: {
+                title: "TalentDB",
+                heroTitle: "Найдите Идеального Кандидата",
+                heroSubtitle: "Анонимный, беспристрастный поиск талантов на основе навыков и опыта",
+                searchPlaceholder: "Поиск по должности, городу, стране, отрасли...",
+                searchHint: "Примеры: плотник, Польша, Варшава, производство, 5+ лет опыта",
+                searchBtn: "Искать",
+                allCandidates: "Все Кандидаты",
+                availableNow: "Доступны Сейчас",
+                nlExperience: "Опыт в NL",
+                euExperience: "Опыт в ЕС",
+                construction: "Строительство",
+                production: "Производство",
+                candidates: "Кандидаты",
+                age: "Возраст",
+                country: "Страна",
+                city: "Город",
+                experience: "Опыт"
+            }
+        };
+
+        // Render candidates
+        function renderCandidates(candidates) {
+            const grid = document.getElementById('candidatesGrid');
+            const resultsCount = document.getElementById('resultsCount');
+            
+            resultsCount.textContent = `${candidates.length} ${translations[currentLang].candidates.toLowerCase()}`;
+            
+            if (candidates.length === 0) {
+                grid.innerHTML = `<div class="no-results">No candidates found matching your criteria.</div>`;
+                return;
+            }
+            
+            grid.innerHTML = candidates.map(candidate => `
+                <div class="candidate-card">
+                    <div class="candidate-avatar">${candidate.code.slice(-2)}</div>
+                    <div class="candidate-code">${candidate.code}</div>
+                    <div class="candidate-position">${candidate.position}</div>
+                    <div class="candidate-info">
+                        ${candidate.age ? `
+                        <div class="info-row">
+                            <span class="info-label" data-i18n="age">Age</span>
+                            <span class="info-value">${candidate.age}</span>
+                        </div>
+                        ` : ''}
+                        <div class="info-row">
+                            <span class="info-label" data-i18n="country">Country</span>
+                            <span class="info-value">${candidate.country}</span>
+                        </div>
+                        ${candidate.city ? `
+                        <div class="info-row">
+                            <span class="info-label" data-i18n="city">City</span>
+                            <span class="info-value">${candidate.city}</span>
+                        </div>
+                        ` : ''}
+                        ${candidate.experience ? `
+                        <div class="info-row">
+                            <span class="info-label" data-i18n="experience">Exp</span>
+                            <span class="info-value">${candidate.experience}y</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="candidate-tags">
+                        ${candidate.tags.filter(t => t).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        ${candidate.available ? '<span class="tag available">Available</span>' : ''}
+                        ${candidate.workedInNL ? '<span class="tag nl">NL Experience</span>' : ''}
+                        ${candidate.workedInEU ? '<span class="tag eu">EU Experience</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            updateTranslations();
+        }
+
+        // Search functionality
+        function searchCandidates(query) {
+            query = query.toLowerCase().trim();
+            
+            if (!query) {
+                filteredCandidates = [...candidatesData];
+                renderCandidates(filteredCandidates);
+                return;
+            }
+            
+            filteredCandidates = candidatesData.filter(candidate => {
+                if (candidate.position.toLowerCase().includes(query)) return true;
+                if (candidate.tags.some(tag => tag.toLowerCase().includes(query))) return true;
+                if (candidate.city && candidate.city.toLowerCase().includes(query)) return true;
+                if (candidate.country && candidate.country.toLowerCase().includes(query)) return true;
+                if (query.match(/\d+/)) {
+                    const queryNum = parseInt(query.match(/\d+/)[0]);
+                    if (candidate.experience >= queryNum) return true;
+                }
+                return false;
+            });
+            
+            renderCandidates(filteredCandidates);
+        }
+
+        // Quick filters
+        document.querySelectorAll('.quick-filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                
+                if (filter === 'all') {
+                    filteredCandidates = [...candidatesData];
+                } else if (filter === 'available') {
+                    filteredCandidates = candidatesData.filter(c => c.available);
+                } else if (filter === 'nl') {
+                    filteredCandidates = candidatesData.filter(c => c.workedInNL);
+                } else if (filter === 'eu') {
+                    filteredCandidates = candidatesData.filter(c => c.workedInEU);
+                } else if (filter === 'construction') {
+                    filteredCandidates = candidatesData.filter(c => 
+                        c.tags.some(tag => tag.toLowerCase().includes('construction')) ||
+                        c.position.toLowerCase().includes('construction')
+                    );
+                } else if (filter === 'production') {
+                    filteredCandidates = candidatesData.filter(c => 
+                        c.tags.some(tag => tag.toLowerCase().includes('production')) ||
+                        c.position.toLowerCase().includes('production')
+                    );
+                }
+                
+                renderCandidates(filteredCandidates);
+            });
+        });
+
+        // Search button
+        document.getElementById('searchBtn').addEventListener('click', () => {
+            const query = document.getElementById('searchInput').value;
+            searchCandidates(query);
+        });
+
+        // Search on Enter
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = document.getElementById('searchInput').value;
+                searchCandidates(query);
+            }
+        });
+
+        // Language switching
+        function updateTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    element.textContent = translations[currentLang][key];
+                }
+            });
+            
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    element.placeholder = translations[currentLang][key];
+                }
+            });
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentLang = this.getAttribute('data-lang');
+                localStorage.setItem('language', currentLang);
+                updateTranslations();
+                renderCandidates(filteredCandidates);
+            });
+        });
+
+        // Initialize
+        renderCandidates(candidatesData);
+        updateTranslations();
+    </script>
+</body>
+</html>
