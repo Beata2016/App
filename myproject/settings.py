@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get(
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.environ.get(
     'DJANGO_ALLOWED_HOSTS',
-    'localhost,127.0.0.1,job.hrconsultingpartner.nl,www.job.hrconsultingpartner.nl'
+    'localhost,127.0.0.1,app-1-sg16.onrender.com,job.hrconsultingpartner.nl,www.job.hrconsultingpartner.nl'
 ).split(',')
 
 # -----------------------
@@ -21,7 +21,7 @@ ALLOWED_HOSTS = os.environ.get(
 # -----------------------
 INSTALLED_APPS = [
     'modeltranslation',
-    'corsheaders',      # ⬅️ OK
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # ⬅️ OK
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -74,75 +74,4 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 # -----------------------
-# Bazy danych
-# -----------------------
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'candidates.sqlite3',
-    },
-    'jobs_db': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'ogloszeniafirm.sqlite3',
-    }
-}
-
-DATABASE_ROUTERS = ['myproject.dbrouters.JobsRouter']
-
-# -----------------------
-# Statyczne pliki
-# -----------------------
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# -----------------------
-# CORS
-# -----------------------
-# myproject/settings.py
-
-ALLOWED_HOSTS = [ 
-    'localhost',
-    '127.0.0.1',
-    'app-1-sg16.onrender.com',  # ⬅️ DODAJ TO
-    'job.hrconsultingpartner.nl',
-    'www.job.hrconsultingpartner.nl',
-]
-
-# CORS - pozwól na requesty z Antagonist
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-    'https://job.hrconsultingpartner.nl',  # Antagonist
-    'https://www.job.hrconsultingpartner.nl',
-]
-
-
-CORS_ALLOW_CREDENTIALS = True
-
-# -----------------------
-# Internacjonalizacja
-# -----------------------
-LANGUAGE_CODE = 'pl'
-
-LANGUAGES = [
-    ('pl', 'Polski'),
-    ('en', 'English'),
-    ('nl', 'Nederlands'),
-    ('de', 'Deutsch'),
-    ('bg', 'Български'),
-    ('ru', 'Русский'),
-    ('uk', 'Українська'),
-]
-
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'pl'
-
-LOCALE_PATHS = [BASE_DIR / 'locale']
-
-TIME_ZONE = 'Europe/Warsaw'
-USE_I18N = True
-USE_TZ = True
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Bazy danyc
