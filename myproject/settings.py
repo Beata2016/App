@@ -102,12 +102,23 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # -----------------------
 # CORS
 # -----------------------
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',  # Lokalnie Django
-    'http://localhost:4321',  # Lokalnie frontend (gdyby był osobny)
-    'https://job.hrconsultingpartner.nl',  # ⬅️ POPRAWIONE
-    'https://www.job.hrconsultingpartner.nl',  # ⬅️ POPRAWIONE
+# myproject/settings.py
+
+ALLOWED_HOSTS = [ 
+    'localhost',
+    '127.0.0.1',
+    'app-1-sg16.onrender.com',  # ⬅️ DODAJ TO
+    'job.hrconsultingpartner.nl',
+    'www.job.hrconsultingpartner.nl',
 ]
+
+# CORS - pozwól na requesty z Antagonist
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'https://job.hrconsultingpartner.nl',  # Antagonist
+    'https://www.job.hrconsultingpartner.nl',
+]
+
 
 CORS_ALLOW_CREDENTIALS = True
 
