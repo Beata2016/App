@@ -1,21 +1,42 @@
-# myproject/views.py
 from django.shortcuts import render
 from candidates.models import Candidate
 from Ogloszeniafirm.models import JobPosting
 
+# Strona główna
 def index(request):
-    """
-    Widok strony głównej - wyświetla najnowsze ogłoszenia i CV
-    """
-    # Pobierz 6 najnowszych aktywnych ogłoszeń
     latest_jobs = JobPosting.objects.filter(is_active=True).order_by('-posted_at')[:6]
-    
-    # Pobierz 6 najnowszych kandydatów
     latest_candidates = Candidate.objects.all().order_by('-created_at')[:6]
-    
-    context = {
-        'jobs': latest_jobs,
-        'candidates': latest_candidates,
-    }
-    
+    context = {'jobs': latest_jobs, 'candidates': latest_candidates}
     return render(request, 'index.html', context)
+
+# Strona dla firm
+def firma(request):
+    return render(request, 'firma.html')
+
+# Strona o nas
+def overons(request):
+    return render(request, 'Overons.html')
+
+# Strona kontaktowa
+def contactus(request):
+    return render(request, 'contactus2.html')
+
+# Strona z AI Chat (jeśli istnieje)
+def ai_chat(request):
+    return render(request, 'ai_chat.html')
+
+# Strona z CV / kandydatami
+def cv_base(request):
+    candidates_list = Candidate.objects.all().order_by('-created_at')
+    context = {'candidates': candidates_list}
+    return render(request, 'list10.html', context)
+
+# Strona z ofertami pracy / vacatures
+def vacatures(request):
+    jobs_list = JobPosting.objects.filter(is_active=True).order_by('-posted_at')
+    context = {'jobs': jobs_list}
+    return render(request, 'job_list.html', context)
+
+# Strona dla firm, np. "voor bedrijven"
+def voor_bedrijven(request):
+    return render(request, 'voor_bedrijven.html', {})

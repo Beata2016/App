@@ -1,352 +1,3 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pl">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="tRGuVWp3RHXsLcvZiCZYfBg7Bm0qWOcHagYL0R5vnP0" />
-    <link rel="canonical" href="https://www.job.hrconsultingpartner.nl/">
-    <title>HR Partner - Werving en Selectie</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BYRM6E8JEG"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-BYRM6E8JEG');
-    </script>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.3s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
-</head>
-
-<body class="bg-white">
-    <div id="app"></div>
-
-    <script>
-        const translations = {
-      pl: { 
-        title: 'HR Partner', 
-        hero: 'Oferty pracy w Holandii dopasowane do Twoich talentów.', 
-        heroSub: 'Połączeni z najlepszymi pracodawcami w Holandii. Dopasowujemy Twoje talenty do firm, które naprawdę do Ciebie pasują.', 
-        searchJobs: 'Szukaj Ofert Pracy', 
-        postJob: 'Poproś o Rekrutację', 
-        search: 'Szukaj po funkcji, sektorze lub lokalizacji...', 
-        searchBtn: 'Szukaj', 
-        searchCV: 'Baza CV',
-        activeJobs: 'Aktywne ogłoszenia', 
-        successfullyPlaced: 'Pomyślnie umieszczone', 
-        partnerCompanies: 'Firmy partnerskie', 
-        howCanWeHelp: 'Jak możemy Ci pomóc?', 
-        forCandidates: 'Dla Kandydatów', 
-        forCompanies: 'Dla Firm', 
-        personalized: 'Spersonalizowane oferty pracy', 
-        careerCoaching: 'Coaching kariery i optymalizacja CV', 
-        interviews: 'Przygotowanie do rozmów kwalifikacyjnych', 
-        support: 'Bezpośrednie wsparcie od specjalistów', 
-        createProfile: 'Stwórz swój profil', 
-        cultureMatching: 'Dopasowanie na bazie kultury firmy', 
-        executiveSearch: 'Usługi executive search', 
-        permanent: 'Werbunek stały i czasowy', 
-        fastPlacement: 'Szybkie umieszczenie (średnio 14 dni)', 
-        postVacancy: 'Skontaktuj się ze specjalistą', 
-        successIsOurPassion: 'Twój sukces to nasza pasja', 
-        startToday: 'Zacznij dziś szukać idealnej pracy', 
-        viewJobs: 'Przejrzyj Oferty', 
-        contactUs: 'Skontaktuj się', 
-        jobListings: 'Ogłoszenia Pracy', 
-        allLanguages: 'Wszystkie języki', 
-        aboutUs: 'O Nas', 
-        contact: 'Kontakt', 
-        home: 'Strona Główna', 
-        cvDatabase: 'Baza CV',
-        forFirms: 'Dla Firm',
-        aiChat: 'AI Chat'
-      },
-      nl: { 
-        title: 'HR Partner', 
-        hero: 'Ontdek je loopbaanpad met ons', 
-        heroSub: 'Verbonden met de beste werkgevers in Nederland. Wij matchen jouw talenten met bedrijven die echt bij je passen.', 
-        searchJobs: 'Vacatures Zoeken', 
-        postJob: 'Post een Vacature Aanvraag', 
-        search: 'Zoek op functie, sector of locatie...', 
-        searchBtn: 'Zoeken',
-        searchCV: 'CV Database',
-        activeJobs: 'Actieve vacatures', 
-        successfullyPlaced: 'Succesvol geplaatst', 
-        partnerCompanies: 'Partner bedrijven', 
-        howCanWeHelp: 'Hoe kunnen wij je helpen?', 
-        forCandidates: 'Voor Kandidaten', 
-        forCompanies: 'Voor Bedrijven', 
-        personalized: 'Gepersonaliseerde vacaturetoevoer', 
-        careerCoaching: 'Carrièrecoaching & CV-optimalisatie', 
-        interviews: 'Voorbereiding op interviews', 
-        support: 'Directe ondersteuning van specialisten', 
-        createProfile: 'Maak je profiel aan', 
-        cultureMatching: 'Cultuurgebaseerde matching', 
-        executiveSearch: 'Executive search services', 
-        permanent: 'Vaste & tijdelijke werving', 
-        fastPlacement: 'Snelle plaatsing (avg. 14 dagen)', 
-        postVacancy: 'Post een vacature', 
-        successIsOurPassion: 'Jouw succes is ons passie', 
-        startToday: 'Start vandaag nog met het vinden van de perfecte baan', 
-        viewJobs: 'Vacatures Bekijken', 
-        contactUs: 'Contact Opnemen', 
-        jobListings: 'Vacatures', 
-        allLanguages: 'Alle talen', 
-        aboutUs: 'Over Ons', 
-        contact: 'Contact', 
-        home: 'Home', 
-        cvDatabase: 'CV Database',
-        forFirms: 'Voor Bedrijven',
-        aiChat: 'AI Chat'
-      },
-      en: { 
-        title: 'HR Partner', 
-        hero: 'Explore your career path with us', 
-        heroSub: 'Connected with the best employers in the Netherlands. We match your talents with companies that truly fit you.', 
-        searchJobs: 'Search Jobs', 
-        postJob: 'Request Recruitment', 
-        search: 'Search by job title, sector or location...', 
-        searchBtn: 'Search',
-        searchCV: 'CV Database',
-        activeJobs: 'Active vacancies', 
-        successfullyPlaced: 'Successfully placed', 
-        partnerCompanies: 'Partner companies', 
-        howCanWeHelp: 'How can we help you?', 
-        forCandidates: 'For Candidates', 
-        forCompanies: 'For Companies', 
-        personalized: 'Personalized job recommendations', 
-        careerCoaching: 'Career coaching & CV optimization', 
-        interviews: 'Interview preparation', 
-        support: 'Direct support from specialists', 
-        createProfile: 'Create your profile', 
-        cultureMatching: 'Culture-based matching', 
-        executiveSearch: 'Executive search services', 
-        permanent: 'Permanent & temporary recruitment', 
-        fastPlacement: 'Fast placement (avg. 14 days)', 
-        postVacancy: 'Contact a specialist', 
-        successIsOurPassion: 'Your success is our passion', 
-        startToday: 'Start today finding the perfect job', 
-        viewJobs: 'View Jobs', 
-        contactUs: 'Contact Us', 
-        jobListings: 'Job Listings', 
-        allLanguages: 'All languages', 
-        aboutUs: 'About Us', 
-        contact: 'Contact', 
-        home: 'Home', 
-        cvDatabase: 'CV Database',
-        forFirms: 'For Companies',
-        aiChat: 'AI Chat'
-      }
-    };
-
-    const jobs = [
-      {% for job in jobs %}
-        {
-          id: {{ job.id }},
-          title: "{{ job.title|escapejs }}",
-          company: "{{ job.company_name|escapejs }}",
-          location: "{{ job.location|escapejs }}",
-          language: "{{ job.language_required|lower }}"
-        }{% if not forloop.last %},{% endif %}
-      {% empty %}
-        // Brak aktywnych ogłoszeń w bazie
-      {% endfor %}
-    ];
-
-    let currentLang = 'nl';
-    let currentFilter = 'all';
-    let searchQuery = '';
-
-    function t(key) { return translations[currentLang][key] || ''; }
-    function changeLang(lang) { currentLang = lang; render(); }
-    function filterJobs(lang) { currentFilter = lang; renderJobs(); }
-
-    function performSearch() {
-      const input = document.querySelector('#search-input');
-      if (input) {
-        searchQuery = input.value.trim();
-        if (searchQuery) {
-          // Przekieruj do bazy kandydatów z parametrem wyszukiwania
-          window.location.href = `/baza-danych/?search=${encodeURIComponent(searchQuery)}`;
-        }
-      }
-    }
-
-    function renderJobs() {
-      const container = document.getElementById('jobs-container');
-      const filtered = currentFilter === 'all' ? jobs : jobs.filter(j => j.language === currentFilter);
-      container.innerHTML = filtered.map(job => `
-        <div class="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
-          <div class="flex justify-between items-start mb-4">
-            <h3 class="text-xl font-bold text-gray-900">${job.title}</h3>
-            <span class="text-xs bg-blue-100 text-blue-600 px-3 py-1 rounded-full font-semibold">${job.language.toUpperCase()}</span>
-          </div>
-          <p class="text-gray-600 mb-2">${job.company}</p>
-          <p class="text-gray-500 text-sm mb-6">${job.location}</p>
-          <button onclick="window.location.href='/ogloszenia/'" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold">${t('searchBtn')}</button>
-        </div>
-      `).join('');
-    }
-
-    function render() {
-      const app = document.getElementById('app');
-      app.innerHTML = `
-        <div class="min-h-screen bg-white fade-in">
-          <header class="fixed w-full bg-white shadow-sm z-50">
-            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center flex-wrap gap-4">
-              <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
-              
-             <nav class="flex gap-3 text-sm flex-wrap">
-    <a href="/" class="hover:text-blue-600 transition font-medium">🏠 ${t('home')}</a>
-    <a href="/baza-danych/" class="hover:text-blue-600 transition font-medium">💼 ${t('cvDatabase')}</a>
-    <a href="/ogloszenia/" class="hover:text-blue-600 transition font-medium">📋 ${t('searchJobs')}</a>
-    <a href="/firma/" class="hover:text-blue-600 transition font-medium">🏢 ${t('forFirms')}</a>
-    <a href="/o-nas/" class="hover:text-blue-600 transition font-medium">👥 ${t('aboutUs')}</a>
-    <a href="/kontakt/" class="hover:text-blue-600 transition font-medium">📧 ${t('contact')}</a>
-    <a href="/ogloszenia/ai-chat/" class="hover:text-blue-600 transition font-medium">🤖 ${t('aiChat')}</a>
-</nav>
-              
-              <div class="flex gap-2">
-                ${['pl', 'nl', 'en'].map(l => `<button onclick="changeLang('${l}')" class="px-3 py-2 rounded-lg text-sm font-semibold transition ${currentLang === l ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${l.toUpperCase()}</button>`).join('')}
-              </div>
-            </div>
-          </header>
-
-          <section class="pt-32 pb-20 px-4" style="background-image: url('{% static "image/Foto12.jpg" %}'); background-size: cover; background-position: center; background-attachment: fixed; height: 550px;">
-
-            <div class="max-w-5xl mx-auto text-center h-full flex flex-col justify-center">
-              <h1 class="text-5xl md:text-6xl font-bold text-white mb-6" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">${t('hero')}</h1>
-            </div>
-          </section>
-
-          <section class="py-10 px-4 bg-white">
-            <div class="max-w-2xl mx-auto">
-              <div class="bg-white rounded-2xl p-8 shadow-lg" style="margin-top: -40px; position: relative; z-index: 10;">
-                <div class="flex flex-col sm:flex-row items-stretch gap-3 bg-gray-50 rounded-lg p-4">
-                  <div class="flex items-center gap-3 flex-1 bg-white rounded-lg px-3">
-                    <i class="fas fa-search text-blue-600 text-xl"></i>
-                    <input 
-                      id="search-input" 
-                      type="text" 
-                      placeholder="${t('search')}" 
-                      class="flex-1 bg-transparent outline-none text-gray-700 py-2"
-                      onkeypress="if(event.key==='Enter') performSearch()"
-                    />
-                  </div>
-                  <button onclick="window.location.href='/ogloszenia/'" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition whitespace-nowrap">
-                    <i class="fas fa-briefcase mr-2"></i>${t('searchJobs')}
-                  </button>
-                  <button onclick="performSearch()" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition whitespace-nowrap">
-                    <i class="fas fa-users mr-2"></i>${t('searchCV')}
-                  </button>
-                </div>
-                <p class="text-sm text-gray-500 mt-3 text-center">💡 ${t('searchCV')} - wyszukaj kandydatów po umiejętnościach, stanowisku lub lokalizacji</p>
-              </div>
-            </div>
-          </section>
-
-          <section class="py-20 px-4">
-            <div class="max-w-6xl mx-auto">
-              <h2 class="text-4xl font-bold text-center mb-12">${t('jobListings')}</h2>
-              <div class="flex gap-3 justify-center mb-12 flex-wrap">
-                ${['all', 'pl', 'nl', 'en'].map(f => `<button onclick="filterJobs('${f}')" class="px-6 py-2 rounded-lg font-semibold transition ${currentFilter === f ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${f === 'all' ? t('allLanguages') : f.toUpperCase()}</button>`).join('')}
-              </div>
-              <div id="jobs-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            </div>
-          </section>
-
-          <section class="py-20 px-4">
-            <div class="max-w-6xl mx-auto">
-              <h2 class="text-4xl font-bold text-center mb-16">${t('howCanWeHelp')}</h2>
-              <div class="grid md:grid-cols-2 gap-12">
-                <div class="bg-blue-50 rounded-2xl p-10 border-2 border-blue-200 hover:shadow-xl transition">
-                  <i class="fas fa-users text-blue-600 text-4xl mb-6"></i>
-                  <h3 class="text-2xl font-bold mb-4 text-gray-900">${t('forCandidates')}</h3>
-                  <ul class="space-y-4 mb-8">
-                    <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('personalized')}</span></li>
-                    <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('careerCoaching')}</span></li>
-                    <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('interviews')}</span></li>
-                    <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('support')}</span></li>
-                  </ul>
-                  <button onclick="window.location.href='/baza-danych/'" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">${t('createProfile')}</button>
-                </div>
-                <div class="bg-indigo-50 rounded-2xl p-10 border-2 border-indigo-200 hover:shadow-xl transition">
-                  <i class="fas fa-briefcase text-indigo-600 text-4xl mb-6"></i>
-                  <h3 class="text-2xl font-bold mb-4 text-gray-900">${t('forCompanies')}</h3>
-                  <ul class="space-y-4 mb-8">
-                    <li class="flex gap-3"><i class="fas fa-check-circle text-indigo-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('cultureMatching')}</span></li>
-                    <li class="flex gap-3"><i class="fas fa-check-circle text-indigo-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('executiveSearch')}</span></li>
-                    <li class="flex gap-3"><i class="fas fa-check-circle text-indigo-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('permanent')}</span></li>
-                    <li class="flex gap-3"><i class="fas fa-check-circle text-indigo-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('fastPlacement')}</span></li>
-                  </ul>
-                  <button onclick="window.location.href='/html/contactus2.html'" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700">${t('postVacancy')}</button>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="py-20 px-4 bg-gray-900 text-white">
-            <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 text-center">
-              <div><div class="text-5xl font-bold text-blue-400 mb-2">1.200+</div><p class="text-gray-300">${t('activeJobs')}</p></div>
-              <div><div class="text-5xl font-bold text-blue-400 mb-2">500+</div><p class="text-gray-300">${t('successfullyPlaced')}</p></div>
-              <div><div class="text-5xl font-bold text-blue-400 mb-2">100+</div><p class="text-gray-300">${t('partnerCompanies')}</p></div>
-            </div>
-          </section>
-
-          <section class="py-20 px-4 bg-blue-600 text-white">
-            <div class="max-w-3xl mx-auto text-center">
-              <h2 class="text-4xl font-bold mb-6">${t('successIsOurPassion')}</h2>
-              <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="window.location.href='/ogloszenia/'" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100">${t('viewJobs')}</button>
-                <button onclick="window.location.href='/html/contactus2.html'" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700">${t('contactUs')}</button>
-              </div>
-            </div>
-          </section>
-
-          <footer class="bg-gray-900 text-gray-300 py-12 px-4">
-            <div class="max-w-6xl mx-auto text-center">
-              <p>&copy; 2025 HR Consulting Partner. All rights reserved.</p>
-            </div>
-          </footer>
-        </div>
-      `;
-      renderJobs();
-    }
-
-    render();
-    </script>
-</body>
-
-</html>
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -538,8 +189,7 @@
       if (input) {
         searchQuery = input.value.trim();
         if (searchQuery) {
-          // Przekieruj do bazy kandydatów z parametrem wyszukiwania
-          window.location.href = `/baza-danych/?search=${encodeURIComponent(searchQuery)}`;
+          window.location.href = `/app/baza-danych/?search=${encodeURIComponent(searchQuery)}`;
         }
       }
     }
@@ -555,7 +205,7 @@
           </div>
           <p class="text-gray-600 mb-2">${job.company}</p>
           <p class="text-gray-500 text-sm mb-6">${job.location}</p>
-          <button onclick="window.location.href='/ogloszenia/'" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold">${t('searchBtn')}</button>
+          <button onclick="window.location.href='/app/ogloszenia/'" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold">${t('searchBtn')}</button>
         </div>
       `).join('');
     }
@@ -569,13 +219,15 @@
               <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
               
               <nav class="flex gap-3 text-sm flex-wrap">
-                <a href="/" class="hover:text-blue-600 transition font-medium">🏠 ${t('home')}</a>
-                <a href="/baza-danych/" class="hover:text-blue-600 transition font-medium">💼 ${t('cvDatabase')}</a>
-                <a href="/ogloszenia/" class="hover:text-blue-600 transition font-medium">📋 ${t('searchJobs')}</a>
-                <a href="/firma.html" class="hover:text-blue-600 transition font-medium">🏢 ${t('forFirms')}</a>
-                <a href="/Overons.html" class="hover:text-blue-600 transition font-medium">👥 ${t('aboutUs')}</a>
-                <a href="/contactus2.html" class="hover:text-blue-600 transition font-medium">📧 ${t('contact')}</a>
-                <a href="/ogloszenia/ai-chat/" class="hover:text-blue-600 transition font-medium">🤖 ${t('aiChat')}</a>
+
+                <nav class="flex gap-3 text-sm flex-wrap">
+                    <a href="index.html" class="hover:text-blue-600 transition font-medium">Home</a>
+                    <a href="{% url 'candidates:list' %}">CV Data</a>
+                    <a href="{% url 'ogloszeniafirm:job_list' %}">Oferty pracy</a>
+                    <a href="firma.html" class="hover:text-blue-600 transition font-medium">Voor bedrijven</a>
+                    <a href="Overons.html" class="hover:text-blue-600 transition font-medium">Over ons</a>
+                    <a href="contactus2.html" class="hover:text-blue-600 transition font-medium">Contact</a>
+                    <a href="/app/ogloszenia/ai-chat/" class="hover:text-blue-600 transition font-medium">🤖 AI Chat</a>
               </nav>
               
               <div class="flex gap-2">
@@ -604,7 +256,7 @@
                       onkeypress="if(event.key==='Enter') performSearch()"
                     />
                   </div>
-                  <button onclick="window.location.href='/ogloszenia/'" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition whitespace-nowrap">
+                  <button onclick="window.location.href='/app/ogloszenia/'" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition whitespace-nowrap">
                     <i class="fas fa-briefcase mr-2"></i>${t('searchJobs')}
                   </button>
                   <button onclick="performSearch()" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition whitespace-nowrap">
@@ -639,7 +291,7 @@
                     <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('interviews')}</span></li>
                     <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('support')}</span></li>
                   </ul>
-                  <button onclick="window.location.href='/baza-danych/'" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">${t('createProfile')}</button>
+                  <button onclick="window.location.href='/app/baza-danych/'" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">${t('createProfile')}</button>
                 </div>
                 <div class="bg-indigo-50 rounded-2xl p-10 border-2 border-indigo-200 hover:shadow-xl transition">
                   <i class="fas fa-briefcase text-indigo-600 text-4xl mb-6"></i>
@@ -650,7 +302,7 @@
                     <li class="flex gap-3"><i class="fas fa-check-circle text-indigo-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('permanent')}</span></li>
                     <li class="flex gap-3"><i class="fas fa-check-circle text-indigo-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('fastPlacement')}</span></li>
                   </ul>
-                  <button onclick="window.location.href='/html/contactus2.html'" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700">${t('postVacancy')}</button>
+                  <button onclick="window.location.href='/contactus2.html'" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700">${t('postVacancy')}</button>
                 </div>
               </div>
             </div>
@@ -664,19 +316,103 @@
             </div>
           </section>
 
-          <section class="py-20 px-4 bg-blue-600 text-white">
+          <section class="py-20 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
             <div class="max-w-3xl mx-auto text-center">
               <h2 class="text-4xl font-bold mb-6">${t('successIsOurPassion')}</h2>
               <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="window.location.href='/ogloszenia/'" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100">${t('viewJobs')}</button>
-                <button onclick="window.location.href='/html/contactus2.html'" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700">${t('contactUs')}</button>
+                <button onclick="window.location.href='/app/ogloszenia/'" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition transform hover:scale-105">
+                  <i class="fas fa-briefcase mr-2"></i>${t('viewJobs')}
+                </button>
+                <button onclick="window.location.href='/contactus2.html'" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition transform hover:scale-105">
+                  <i class="fas fa-envelope mr-2"></i>${t('contactUs')}
+                </button>
               </div>
             </div>
           </section>
 
-          <footer class="bg-gray-900 text-gray-300 py-12 px-4">
-            <div class="max-w-6xl mx-auto text-center">
-              <p>&copy; 2025 HR Consulting Partner. All rights reserved.</p>
+          <footer class="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-16 px-4">
+            <div class="max-w-7xl mx-auto">
+              <div class="grid md:grid-cols-4 gap-12 mb-12">
+                
+                <div>
+                  <h3 class="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+                    🎯 HR Partner
+                  </h3>
+                  <p class="text-gray-300 mb-6 leading-relaxed">
+                    Łączymy najlepsze talenty z najlepszymi pracodawcami w całej Europie.
+                  </p>
+                  <div class="flex gap-4">
+                    <a href="https://www.linkedin.com" target="_blank" class="w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition transform hover:scale-110">
+                      <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank" class="w-12 h-12 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center transition transform hover:scale-110">
+                      <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" class="w-12 h-12 bg-pink-600 hover:bg-pink-700 rounded-full flex items-center justify-center transition transform hover:scale-110">
+                      <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="https://twitter.com" target="_blank" class="w-12 h-12 bg-sky-500 hover:bg-sky-600 rounded-full flex items-center justify-center transition transform hover:scale-110">
+                      <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 class="text-lg font-bold mb-6 text-blue-400">Dla Kandydatów</h4>
+                  <ul class="space-y-3">
+                    <li><a href="/app/ogloszenia/" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Szukaj pracy</a></li>
+                    <li><a href="/app/baza-danych/" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Dodaj CV</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Porady kariery</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Szkolenia</a></li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="text-lg font-bold mb-6 text-blue-400">Dla Pracodawców</h4>
+                  <ul class="space-y-3">
+                    <li><a href="/firma.html" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Dodaj ogłoszenie</a></li>
+                    <li><a href="/app/baza-danych/" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Baza CV</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Cennik</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Jak to działa</a></li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="text-lg font-bold mb-6 text-blue-400">Kontakt</h4>
+                  <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                      <i class="fas fa-envelope text-blue-400 mt-1"></i>
+                      <a href="mailto:info@hrconsultingpartner.nl" class="text-gray-300 hover:text-blue-400 transition">
+                        info@hrconsultingpartner.nl
+                      </a>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <i class="fas fa-phone text-blue-400 mt-1"></i>
+                      <a href="tel:+31123456789" class="text-gray-300 hover:text-blue-400 transition">
+                        +31 12 345 6789
+                      </a>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <i class="fas fa-map-marker-alt text-blue-400 mt-1"></i>
+                      <span class="text-gray-300">
+                        Amsterdam, Nederland
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+              <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-400 text-sm">
+                  &copy; 2025 HR Consulting Partner. Wszystkie prawa zastrzeżone.
+                </p>
+                <div class="flex gap-6 text-sm">
+                  <a href="#" class="text-gray-400 hover:text-blue-400 transition">Polityka prywatności</a>
+                  <a href="#" class="text-gray-400 hover:text-blue-400 transition">Regulamin</a>
+                  <a href="#" class="text-gray-400 hover:text-blue-400 transition">Cookies</a>
+                </div>
+              </div>
             </div>
           </footer>
         </div>

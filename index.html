@@ -220,14 +220,10 @@
               <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
               
               <nav class="flex gap-3 text-sm flex-wrap">
-                <a href="index.html" class="hover:text-blue-600 transition font-medium"> ${t('home')}</a>
-                <a href="/baza-danych/" class="hover:text-blue-600 transition font-medium"> ${t('cvDatabase')}</a>
-                <a href="/ogloszenia/" class="hover:text-blue-600 transition font-medium"> ${t('searchJobs')}</a>
-                <a href="firma.html" class="hover:text-blue-600 transition font-medium"> ${t('forFirms')}</a>
-                <link href="{% static 'hr_portotype/ job_list.htmla' %} class="hover:text-blue-600 transition font-medium">
-                <a href="Overons.html" class="hover:text-blue-600 transition font-medium"> ${t('aboutUs')}</a>
-                <a href="contactus2.html" class="hover:text-blue-600 transition font-medium"> ${t('contact')}</a>
-                <a href="ogloszenia/ai-chat/" class="hover:text-blue-600 transition font-medium">${t('aiChat')}</a>
+              <li><a href="{% url 'index' %}">Strona główna</a></li>
+              <li><a href="{% url 'candidates:list' %}">Kandydaci</a></li>
+              <li><a href="{% url 'jobposting:list' %}">Oferty pracy</a></li>
+              <li><a href="{% url 'about' %}">O firmie</a></li>
               </nav>
               
               <div class="flex gap-2">
