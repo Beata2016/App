@@ -14,9 +14,9 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BYRM6E8JEG"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-BYRM6E8JEG');
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BYRM6E8JEG');
     </script>
 
     <style>
@@ -50,6 +50,9 @@
     <div id="app"></div>
 
     <script>
+        // ⚙️ KONFIGURACJA - Adres Django na Render
+        const DJANGO_URL = 'https://app-1-sg16.onrender.com';
+
         const translations = {
       pl: { 
         title: 'HR Partner', 
@@ -189,7 +192,7 @@
       if (input) {
         searchQuery = input.value.trim();
         if (searchQuery) {
-          window.location.href = `/app/baza-danych/?search=${encodeURIComponent(searchQuery)}`;
+          window.location.href = `${DJANGO_URL}/candidates/?search=${encodeURIComponent(searchQuery)}`;
         }
       }
     }
@@ -205,7 +208,7 @@
           </div>
           <p class="text-gray-600 mb-2">${job.company}</p>
           <p class="text-gray-500 text-sm mb-6">${job.location}</p>
-          <button onclick="window.location.href='/app/ogloszenia/'" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold">${t('searchBtn')}</button>
+          <button onclick="window.location.href='${DJANGO_URL}/jobs/'" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold">${t('searchBtn')}</button>
         </div>
       `).join('');
     }
@@ -219,15 +222,14 @@
               <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
               
               <nav class="flex gap-3 text-sm flex-wrap">
-
-                <nav class="flex gap-3 text-sm flex-wrap">
-                    <a href="index.html" class="hover:text-blue-600 transition font-medium">Home</a>
-                    <a href="{% url 'candidates:list' %}">CV Data</a>
-                    <a href="{% url 'ogloszeniafirm:job_list' %}">Oferty pracy</a>
-                    <a href="firma.html" class="hover:text-blue-600 transition font-medium">Voor bedrijven</a>
-                    <a href="Overons.html" class="hover:text-blue-600 transition font-medium">Over ons</a>
-                    <a href="contactus2.html" class="hover:text-blue-600 transition font-medium">Contact</a>
-                    <a href="/app/ogloszenia/ai-chat/" class="hover:text-blue-600 transition font-medium">🤖 AI Chat</a>
+                <a href="index.html" class="hover:text-blue-600 transition font-medium">Home</a>
+                <a href="${DJANGO_URL}/candidates/" class="hover:text-blue-600 transition font-medium">CV Data</a>
+                <a href="${DJANGO_URL}/jobs/" class="hover:text-blue-600 transition font-medium">Oferty pracy</a>
+                
+                <a href="firma.html" class="hover:text-blue-600 transition font-medium">Voor bedrijven</a>
+                <a href="Overons.html" class="hover:text-blue-600 transition font-medium">Over ons</a>
+                <a href="contactus2.html" class="hover:text-blue-600 transition font-medium">Contact</a>
+                <a href="${DJANGO_URL}/ai-chat/" class="hover:text-blue-600 transition font-medium">🤖 AI Chat</a>
               </nav>
               
               <div class="flex gap-2">
@@ -256,7 +258,7 @@
                       onkeypress="if(event.key==='Enter') performSearch()"
                     />
                   </div>
-                  <button onclick="window.location.href='/app/ogloszenia/'" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition whitespace-nowrap">
+                  <button onclick="window.location.href='${DJANGO_URL}/jobs/'" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition whitespace-nowrap">
                     <i class="fas fa-briefcase mr-2"></i>${t('searchJobs')}
                   </button>
                   <button onclick="performSearch()" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition whitespace-nowrap">
@@ -291,7 +293,7 @@
                     <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('interviews')}</span></li>
                     <li class="flex gap-3"><i class="fas fa-check-circle text-blue-600 flex-shrink-0 mt-1"></i><span class="text-gray-700">${t('support')}</span></li>
                   </ul>
-                  <button onclick="window.location.href='/app/baza-danych/'" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">${t('createProfile')}</button>
+                  <button onclick="window.location.href='${DJANGO_URL}/candidates/'" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">${t('createProfile')}</button>
                 </div>
                 <div class="bg-indigo-50 rounded-2xl p-10 border-2 border-indigo-200 hover:shadow-xl transition">
                   <i class="fas fa-briefcase text-indigo-600 text-4xl mb-6"></i>
@@ -320,7 +322,7 @@
             <div class="max-w-3xl mx-auto text-center">
               <h2 class="text-4xl font-bold mb-6">${t('successIsOurPassion')}</h2>
               <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="window.location.href='/app/ogloszenia/'" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition transform hover:scale-105">
+                <button onclick="window.location.href='${DJANGO_URL}/jobs/'" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition transform hover:scale-105">
                   <i class="fas fa-briefcase mr-2"></i>${t('viewJobs')}
                 </button>
                 <button onclick="window.location.href='/contactus2.html'" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition transform hover:scale-105">
@@ -360,8 +362,8 @@
                 <div>
                   <h4 class="text-lg font-bold mb-6 text-blue-400">Dla Kandydatów</h4>
                   <ul class="space-y-3">
-                    <li><a href="/app/ogloszenia/" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Szukaj pracy</a></li>
-                    <li><a href="/app/baza-danych/" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Dodaj CV</a></li>
+                    <li><a href="${DJANGO_URL}/jobs/" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Szukaj pracy</a></li>
+                    <li><a href="${DJANGO_URL}/candidates/" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Dodaj CV</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Porady kariery</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Szkolenia</a></li>
                   </ul>
@@ -371,7 +373,7 @@
                   <h4 class="text-lg font-bold mb-6 text-blue-400">Dla Pracodawców</h4>
                   <ul class="space-y-3">
                     <li><a href="/firma.html" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Dodaj ogłoszenie</a></li>
-                    <li><a href="/app/baza-danych/" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Baza CV</a></li>
+                    <li><a href="${DJANGO_URL}/candidates/" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Baza CV</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Cennik</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-xs"></i> Jak to działa</a></li>
                   </ul>

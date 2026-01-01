@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import JobPosting
 import json
 
@@ -161,17 +162,51 @@ def job_list(request):
             Q(requirements__icontains=search_query)
         )
 
-    # Filtry szczegółowe
+    # Map GET parameters to model fields when names differ
+    get_to_field = {
+        'language': 'language_required',
+        'remote': 'remote_option',
+    }
+
+    # Filtry szczegółowe (używaj dokładnego dopasowania dla pól wyboru)
     filters = ['job_role', 'industry', 'country', 'location', 'employment_type', 'language', 'weekly_hours', 'remote']
     for f in filters:
-        val = request.GET.get(f, '')
-        if val:
-            if f == 'location':
-                jobs = jobs.filter(location__icontains=val)
-            else:
-                jobs = jobs.filter(**{f: val})
+        val = request.GET.get(f, '').strip()
+        if not val:
+            continue
 
-    jobs = jobs.order_by('-posted_at')
+        field_name = get_to_field.get(f, f)
+        # location powinno być partial match
+        if f == 'location':
+            jobs = jobs.filter(location__icontains=val)
+        else:
+            # bezpieczeństwo: tylko istniejące pola
+            try:
+                jobs = jobs.filter(**{field_name: val})
+            except Exception:
+                # ignoruj nieprawidłowe filtry zamiast podnosić wyjątek
+                continue
+
+    # Sortowanie
+    sort = request.GET.get('sort', 'newest')
+    if sort == 'salary':
+        # sortuj po maksymalnym wynagrodzeniu, a potem po dacie
+        jobs = jobs.order_by('-salary_max', '-salary_min', '-posted_at')
+    else:
+        jobs = jobs.order_by('-posted_at')
+
+    # Paginacja — template oczekuje na `jobs.paginator.count`
+    try:
+        page = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        page = 1
+
+    paginator = Paginator(jobs, 10)
+    try:
+        jobs_page = paginator.page(page)
+    except (EmptyPage, PageNotAnInteger):
+        jobs_page = paginator.page(1)
+    jobs = jobs_page
 
     # Opcje dropdown
     def choices_list(field_name):

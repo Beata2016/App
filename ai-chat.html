@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Chat - HR Partner</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* Animacje */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%,80%,100% { transform: scale(0); } 40% { transform: scale(1); } }
+.message { animation: fadeIn 0.3s ease-out; }
+.typing-indicator { display: inline-flex; gap: 4px; }
+.typing-indicator span { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; animation: bounce 1.4s infinite ease-in-out; }
+.typing-indicator span:nth-child(1){ animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2){ animation-delay: -0.16s; }
+
+/* Banner */
+.header-banner {
+    width: 100%;
+    height: 300px;
+    background: url('foto12.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+/* Layout chat */
+#chat-messages { scroll-behavior: smooth; max-height: 400px; overflow-y: auto; }
+#user-input { max-width: 400px; flex: 1; }
+.lang-select { min-width: 120px; }
+nav a { margin-right: 1rem; }
+</style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen">
+
+<!-- Banner -->
+<div class="header-banner">Skorzystaj z pomocy AI</div>
+
+<!-- Menu + języki -->
+<header class="bg-white shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center flex-wrap">
+    <div class="flex items-center gap-3 flex-wrap">
+      <a href="index.html" class="text-2xl font-bold text-blue-600" id="site-title">HR Partner</a>
+      <nav class="flex gap-3 text-sm flex-wrap" id="main-nav">
+        <a href="index.html" class="hover:text-blue-600 transition font-medium">Home</a>
+        <a href="candidates.html" class="hover:text-blue-600 transition font-medium">CV Data</a>
+        <a href="jobs.html" class="hover:text-blue-600 transition font-medium">Oferty pracy</a>
+        <a href="firma.html" class="hover:text-blue-600 transition font-medium">Voor bedrijven</a>
+        <a href="overons.html" class="hover:text-blue-600 transition font-medium">Over ons</a>
+        <a href="contactus2.html" class="hover:text-blue-600 transition font-medium">Contact</a>
+        <a href="ai-chat.html" class="hover:text-blue-600 transition font-medium">🤖 AI Chat</a>
+      </nav>
+    </div>
+    <select id="language-select" class="border border-gray-300 rounded px-2 py-1 text-sm lang-select">
+      <option value="pl">PL</option>
+      <option value="en">EN</option>
+      <option value="nl">NL</option>
+      <option value="de">DE</option>
+      <option value="ua">UA</option>
+      <option value="bg">BG</option>
+    </select>
+  </div>
+</header>
+
+<!-- Main Chat + Info -->
+<div class="max-w-5xl mx-auto px-4 py-8">
+
+  <!-- Info Cards -->
+  <div class="grid md:grid-cols-2 gap-4 mb-6">
+    <div class="bg-white rounded-2xl p-6 shadow-lg border-2 border-blue-100">
+      <div class="flex items-center gap-3 mb-3">
+        <i class="fas fa-user-tie text-blue-600 text-2xl"></i>
+        <h3 class="font-bold text-lg" id="candidate-title">Dla Kandydatów</h3>
+      </div>
+      <p class="text-gray-600 text-sm" id="candidate-text">
+        Pomogę Ci znaleźć idealną pracę, przygotować CV i rozmowę kwalifikacyjną!
+      </p>
+    </div>
+    <div class="bg-white rounded-2xl p-6 shadow-lg border-2 border-indigo-100">
+      <div class="flex items-center gap-3 mb-3">
+        <i class="fas fa-building text-indigo-600 text-2xl"></i>
+        <h3 class="font-bold text-lg" id="company-title">Dla Firm</h3>
+      </div>
+      <p class="text-gray-600 text-sm" id="company-text">
+        Znajdę odpowiednich kandydatów i pomogę w procesie rekrutacji!
+      </p>
+    </div>
+  </div>
+
+  <!-- Chat Box -->
+  <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+    <div id="chat-messages" class="h-96 overflow-y-auto p-6 space-y-4"></div>
+    <div class="border-t border-gray-200 p-4 bg-gray-50 flex flex-col gap-2">
+      <div class="flex gap-3">
+        <input type="text" id="user-input" placeholder="Wpisz swoją wiadomość..." 
+        class="flex-1 rounded-xl border-2 border-gray-300 px-4 py-3 focus:outline-none focus:border-blue-500 transition"
+        onkeypress="if(event.key==='Enter') sendMessage()" />
+        <button onclick="sendMessage()" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition transform hover:scale-105 flex items-center gap-2">
+          <i class="fas fa-paper-plane"></i> Wyślij
+        </button>
+      </div>
+      <div class="flex flex-wrap gap-2" id="quick-buttons"></div>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <p class="text-center text-gray-500 text-sm mt-4">
+    <i class="fas fa-info-circle"></i> AI może popełniać błędy. Sprawdź ważne informacje.
+  </p>
+</div>
+
+<script>
+const MAX_QUERIES = 50;
+let queryCount = 0;
+
+const chatMessages = document.getElementById('chat-messages');
+const userInput = document.getElementById('user-input');
+const langSelect = document.getElementById('language-select');
+
+const texts = {
+  pl:{candidateTitle:"Dla Kandydatów",candidateText:"Pomogę Ci znaleźć idealną pracę, przygotować CV i rozmowę kwalifikacyjną!",companyTitle:"Dla Firm",companyText:"Znajdę odpowiednich kandydatów i pomogę w procesie rekrutacji!",userPlaceholder:"Wpisz swoją wiadomość...",quickQuestions:["💻 Szukam pracy jako programista","👥 Kandydaci w bazie","📝 Pomoc z CV"],systemPrompt:"Jesteś pomocnym asystentem HR Partner - firmy rekrutacyjnej w Holandii. Pomagasz kandydatom i firmom, odpowiadaj w języku użytkownika."},
+  en:{candidateTitle:"For Candidates",candidateText:"I will help you find the perfect job, prepare your CV and interview!",companyTitle:"For Companies",companyText:"I will find the right candidates and assist in recruitment processes!",userPlaceholder:"Type your message...",quickQuestions:["💻 Looking for a developer job","👥 Candidates in database","📝 CV help"],systemPrompt:"You are a helpful HR assistant for HR Partner - a recruitment company in the Netherlands. Help candidates and companies, answer in the user's language."},
+  nl:{candidateTitle:"Voor Kandidaat",candidateText:"Ik help je de perfecte baan te vinden, je CV en sollicitatie voor te bereiden!",companyTitle:"Voor Bedrijven",companyText:"Ik vind de juiste kandidaten en ondersteun bij het wervingsproces!",userPlaceholder:"Typ je bericht...",quickQuestions:["💻 Zoek een programmeerbaan","👥 Kandidaten in database","📝 CV hulp"],systemPrompt:"Je bent een behulpzame HR-assistent voor HR Partner - een wervingsbedrijf in Nederland. Help kandidaten en bedrijven, antwoord in de taal van de gebruiker."},
+  de:{candidateTitle:"Für Kandidaten",candidateText:"Ich helfe Ihnen, den perfekten Job zu finden, CV und Vorstellungsgespräch vorzubereiten!",companyTitle:"Für Firmen",companyText:"Ich finde die richtigen Kandidaten und unterstütze bei der Rekrutierung!",userPlaceholder:"Geben Sie Ihre Nachricht ein...",quickQuestions:["💻 Suche einen Programmiererjob","👥 Kandidaten in der Datenbank","📝 CV Hilfe"],systemPrompt:"Sie sind ein hilfreicher HR-Assistent für HR Partner - ein Personalvermittlungsunternehmen in den Niederlanden. Helfen Sie Kandidaten und Unternehmen, antworten Sie in der Sprache des Benutzers."},
+  ua:{candidateTitle:"Для кандидатів",candidateText:"Я допоможу вам знайти ідеальну роботу, підготувати CV та співбесіду!",companyTitle:"Для компаній",companyText:"Я знайду відповідних кандидатів і допоможу в процесі рекрутації!",userPlaceholder:"Введіть своє повідомлення...",quickQuestions:["💻 Шукаю роботу програмістом","👥 Кандидати в базі","📝 Допомога з CV"],systemPrompt:"Ви є корисним HR-асистентом для HR Partner - рекрутингової компанії в Нідерландах. Допоможіть кандидатам та компаніям, відповідайте мовою користувача."},
+  bg:{candidateTitle:"За кандидати",candidateText:"Ще помогна да намерите перфектната работа, подгответе CV и интервю!",companyTitle:"За фирми",companyText:"Ще намеря подходящите кандидати и ще помогна при наемането!",userPlaceholder:"Въведете съобщението си...",quickQuestions:["💻 Търся работа като разработчик","👥 Кандидати в базата","📝 Помощ за CV"],systemPrompt:"Вие сте полезен HR асистент за HR Partner - компания за подбор на персонал в Нидерландия. Помагайте на кандидатите и фирмите, отговаряйте на езика на потребителя."}
+};
+
+function updateLanguage(){
+  const lang = langSelect.value;
+  document.getElementById('candidate-title').innerText = texts[lang].candidateTitle;
+  document.getElementById('candidate-text').innerText = texts[lang].candidateText;
+  document.getElementById('company-title').innerText = texts[lang].companyTitle;
+  document.getElementById('company-text').innerText = texts[lang].companyText;
+  userInput.placeholder = texts[lang].userPlaceholder;
+
+  const quickDiv = document.getElementById('quick-buttons'); quickDiv.innerHTML='';
+  texts[lang].quickQuestions.forEach(q=>{
+    const btn=document.createElement('button');
+    btn.innerText=q;
+    btn.className='text-xs bg-white border border-gray-300 px-3 py-1 rounded-full hover:bg-blue-50 transition';
+    btn.onclick=()=>{userInput.value=q; sendMessage();};
+    quickDiv.appendChild(btn);
+  });
+}
+langSelect.addEventListener('change',updateLanguage);
+updateLanguage();
+
+function addMessage(text,isUser=false){
+  const messageDiv=document.createElement('div');
+  messageDiv.className='message flex gap-3'+(isUser?' flex-row-reverse':'');
+  const avatar=document.createElement('div');
+  avatar.className='w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0';
+  if(isUser){
+    avatar.className+=' bg-gradient-to-br from-green-500 to-emerald-600';
+    avatar.innerHTML='<i class="fas fa-user text-white"></i>';
+  } else {
+    avatar.className+=' bg-gradient-to-br from-blue-500 to-indigo-600';
+    avatar.innerHTML='<i class="fas fa-robot text-white"></i>';
+  }
+  const contentDiv=document.createElement('div'); contentDiv.className='flex-1';
+  const bubble=document.createElement('div');
+  bubble.className='rounded-2xl p-4 '+(isUser?'bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-tr-none':'bg-gradient-to-r from-blue-50 to-indigo-50 rounded-tl-none');
+  bubble.innerHTML=text.replace(/\n/g,'<br>');
+  contentDiv.appendChild(bubble);
+  messageDiv.appendChild(avatar); messageDiv.appendChild(contentDiv);
+  chatMessages.appendChild(messageDiv);
+  chatMessages.scrollTop=chatMessages.scrollHeight;
+}
+
+function showTyping(){
+  const typingDiv=document.createElement('div');
+  typingDiv.id='typing-indicator';
+  typingDiv.className='message flex gap-3';
+  typingDiv.innerHTML=`<div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center"><i class="fas fa-robot text-white"></i></div><div class="flex-1"><div class="bg-blue-50 rounded-2xl rounded-tl-none p-4"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
+  chatMessages.appendChild(typingDiv);
+  chatMessages.scrollTop=chatMessages.scrollHeight;
+}
+
+function hideTyping(){const typing=document.getElementById('typing-indicator'); if(typing) typing.remove();}
+
+// Poprawione sendMessage()
+async function sendMessage(){
+  if(queryCount >= MAX_QUERIES){addMessage('⚠️ Osiągnięto dzienny limit zapytań', false); return;}
+  const message = userInput.value.trim();
+  if(!message) return;
+  addMessage(message,true); userInput.value=''; showTyping();
+  try{
+    const response = await fetch("http://127.0.0.1:8000/api/chat",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        message: message,
+        lang: langSelect.value
+      })
+    });
+    const data = await response.json();
+    hideTyping(); queryCount++;
+    addMessage(data.reply,false);
+  } catch(err){
+    hideTyping();
+    addMessage('❌ Nie mogę teraz odpowiedzieć.',false);
+    console.error(err);
+  }
+}
+
+// Auto language
+const browserLang = navigator.language.slice(0,2);
+if(texts[browserLang]){langSelect.value = browserLang; updateLanguage();}
+</script>
+</body>
+</html>

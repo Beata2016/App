@@ -243,10 +243,13 @@ function render() {
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <div class="text-2xl font-bold text-blue-600">${t('title')}</div>
           <nav class="flex gap-3 text-sm flex-wrap">
-        <li><a href="{% url 'index' %}">Strona główna</a></li>
-        <li><a href="{% url 'candidates:list' %}">Kandydaci</a></li>
-        <li><a href="{% url 'jobposting:list' %}">Oferty pracy</a></li>
-        <li><a href="{% url 'about' %}">O firmie</a></li>
+        <a href="index.html" class="hover:text-blue-600 transition font-medium">Home</a>
+                <a href="${DJANGO_URL}/candidates/" class="hover:text-blue-600 transition font-medium">CV Data</a>
+                <a href="${DJANGO_URL}/jobs/" class="hover:text-blue-600 transition font-medium">Oferty pracy</a>
+                <a href="firma.html" class="hover:text-blue-600 transition font-medium">Voor bedrijven</a>
+                <a href="Overons.html" class="hover:text-blue-600 transition font-medium">Over ons</a>
+                <a href="contactus2.html" class="hover:text-blue-600 transition font-medium">Contact</a>
+                <a href="${DJANGO_URL}/ai-chat/" class="hover:text-blue-600 transition font-medium">🤖 AI Chat</a>
 </nav>
           <div class="flex gap-2">
             ${['pl','nl','en','cs','bg'].map(l => `<button onclick="changeLang('${l}')" class="px-3 py-2 rounded-lg text-sm font-semibold transition ${currentLang===l?'bg-blue-600 text-white':'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${l.toUpperCase()}</button>`).join('')}

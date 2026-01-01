@@ -1,0 +1,167 @@
+[
+    {
+        "id": 1,
+        "imie": "Jan",
+        "nazwisko": "Kowalski",
+        "gender": "M",
+        "age": 28,
+        "job_role": "ENGINEER",
+        "job_role_translations": {
+            "pl": "Inżynier",
+            "nl": "Ingenieur",
+            "en": "Engineer"
+        },
+        "wyksztalcenie": "Wyższe techniczne",
+        "doswiadczenie": "5 lat doświadczenia w branży IT",
+        "lokalizacja": "Warszawa",
+        "city": "Warszawa",
+        "country": "pl",
+        "industry": "IT_TELEINFORMATICS",
+        "industry_translations": {
+            "pl": "IT i teleinformatyka",
+            "nl": "IT & Telecommunicatie",
+            "en": "IT & Telecommunications"
+        },
+        "desired_position": "Java Developer",
+        "years_experience": 5,
+        "bio": "Java, Spring Boot, SQL, Docker, Kubernetes",
+        "avatar_url": "",
+        "available_for_contact": true,
+        "worked_in_eu": true,
+        "worked_in_nl": false,
+        "accommodation_nl": "",
+        "data_dodania": "2024-01-15"
+    },
+    {
+        "id": 2,
+        "imie": "Maria",
+        "nazwisko": "Nowak",
+        "gender": "F",
+        "age": 32,
+        "job_role": "TECHNICIAN",
+        "job_role_translations": {
+            "pl": "Technik",
+            "nl": "Technicus",
+            "en": "Technician"
+        },
+        "wyksztalcenie": "Wyższe ekonomiczne",
+        "doswiadczenie": "8 lat w zarządzaniu projektami",
+        "lokalizacja": "Kraków",
+        "city": "Kraków",
+        "country": "pl",
+        "industry": "CONSTRUCTION",
+        "industry_translations": {
+            "pl": "Budownictwo",
+            "nl": "Bouw",
+            "en": "Construction"
+        },
+        "desired_position": "Project Manager",
+        "years_experience": 8,
+        "bio": "Agile, Scrum, Leadership, Budget Management, MS Project",
+        "avatar_url": "",
+        "available_for_contact": true,
+        "worked_in_eu": true,
+        "worked_in_nl": true,
+        "accommodation_nl": "Tak",
+        "data_dodania": "2024-02-20"
+    },
+    {
+        "id": 3,
+        "imie": "Pieter",
+        "nazwisko": "de Vries",
+        "gender": "M",
+        "age": 35,
+        "job_role": "OTHER",
+        "job_role_translations": {
+            "pl": "Specjalista",
+            "nl": "Specialist",
+            "en": "Specialist"
+        },
+        "wyksztalcenie": "Wyższe marketingowe",
+        "doswiadczenie": "6 lat w marketingu cyfrowym",
+        "lokalizacja": "Amsterdam",
+        "city": "Amsterdam",
+        "country": "nl",
+        "industry": "OTHER",
+        "industry_translations": {
+            "pl": "Marketing",
+            "nl": "Marketing",
+            "en": "Marketing"
+        },
+        "desired_position": "Marketing Specialist",
+        "years_experience": 6,
+        "bio": "SEO, Content Marketing, Google Analytics, Social Media, AdWords",
+        "avatar_url": "",
+        "available_for_contact": true,
+        "worked_in_eu": true,
+        "worked_in_nl": true,
+        "accommodation_nl": "Nie potrzebne",
+        "data_dodania": "2024-03-10"
+    },
+    {
+        "id": 4,
+        "imie": "Anna",
+        "nazwisko": "Wiśniewska",
+        "gender": "F",
+        "age": 26,
+        "job_role": "ENGINEER",
+        "job_role_translations": {
+            "pl": "Inżynier",
+            "nl": "Ingenieur",
+            "en": "Engineer"
+        },
+        "wyksztalcenie": "Wyższe informatyczne",
+        "doswiadczenie": "4 lata jako Frontend Developer",
+        "lokalizacja": "Gdańsk",
+        "city": "Gdańsk",
+        "country": "pl",
+        "industry": "IT_TELEINFORMATICS",
+        "industry_translations": {
+            "pl": "IT i teleinformatyka",
+            "nl": "IT & Telecommunicatie",
+            "en": "IT & Telecommunications"
+        },
+        "desired_position": "Frontend Developer",
+        "years_experience": 4,
+        "bio": "React, JavaScript, TypeScript, CSS, HTML5, Redux",
+        "avatar_url": "",
+        "available_for_contact": true,
+        "worked_in_eu": false,
+        "worked_in_nl": false,
+        "accommodation_nl": "",
+        "data_dodania": "2024-04-05"
+    },
+    {
+        "id": 5,
+        "imie": "Marek",
+        "nazwisko": "Zieliński",
+        "gender": "M",
+        "age": 40,
+        "job_role": "TECHNICIAN",
+        "job_role_translations": {
+            "pl": "Technik",
+            "nl": "Technicus",
+            "en": "Technician"
+        },
+        "wyksztalcenie": "Średnie zawodowe",
+        "doswiadczenie": "15 lat w budownictwie",
+        "lokalizacja": "Wrocław",
+        "city": "Wrocław",
+        "country": "pl",
+        "industry": "CONSTRUCTION",
+        "industry_translations": {
+            "pl": "Budownictwo",
+            "nl": "Bouw",
+            "en": "Construction"
+        },
+        "desired_position": "Brygadzista budowlany",
+        "years_experience": 15,
+        "bio": "Murarz, Tynkarz, Zarządzanie ekipą, VCA certyfikat",
+        "avatar_url": "",
+        "available_for_contact": true,
+        "worked_in_eu": true,
+        "worked_in_nl": true,
+        "accommodation_nl": "Tak",
+        "data_dodania": "2024-05-12"
+    }
+]

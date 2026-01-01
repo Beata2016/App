@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 
+# -----------------------
+# Ścieżki bazowe
+# -----------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # -----------------------
@@ -13,7 +16,7 @@ SECRET_KEY = os.environ.get(
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.environ.get(
     'DJANGO_ALLOWED_HOSTS',
-    'localhost,127.0.0.1,app-1-sg16.onrender.com,job.hrconsultingpartner.nl,www.job.hrconsultingpartner.nl'
+    'localhost,127.0.0.1'
 ).split(',')
 
 # -----------------------
@@ -57,9 +60,7 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'templates',
-        ],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,4 +75,104 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 # -----------------------
-# Bazy danyc
+# Bazy danych
+# -----------------------
+IS_PRODUCTION = os.environ.get('PRODUCTION', 'False') == 'True'
+
+if IS_PRODUCTION:
+    # Produkcja - MySQL na serwerze Antagonist
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('MYSQL_DB_CANDIDATES', 'deb98572_django'),
+            'USER': os.environ.get('MYSQL_USER', 'deb98572_django'),
+            'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'Rudie2025!'),
+            'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
+            'PORT': os.environ.get('MYSQL_PORT', '3306'),
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                'charset': 'utf8mb4',
+            },
+        },
+        'jobs_db': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('MYSQL_DB_JOBS', 'deb98572_jobs'),
+            'USER': os.environ.get('MYSQL_USER_JOBS', 'deb98572_jobs'),
+            'PASSWORD': os.environ.get('MYSQL_PASSWORD_JOBS', 'Rudie2025!'),
+            'HOST': os.environ.get('MYSQL_HOST_JOBS', 'localhost'),
+            'PORT': os.environ.get('MYSQL_PORT_JOBS', '3306'),
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                'charset': 'utf8mb4',
+            },
+        }
+    }
+    DATABASE_ROUTERS = ['myproject.dbrouters.JobsRouter']
+else:
+    # Lokalne - SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        },
+        'jobs_db': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db_jobs.sqlite3',
+        }
+    }
+    DATABASE_ROUTERS = ['myproject.dbrouters.JobsRouter']
+
+# -----------------------
+# Walidacja haseł
+# -----------------------
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
+
+# -----------------------
+# Statyczne pliki
+# -----------------------
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# -----------------------
+# Pliki media
+# -----------------------
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# -----------------------
+# CORS
+# -----------------------
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+]
+CORS_ALLOW_CREDENTIALS = True
+
+# -----------------------
+# Internacjonalizacja
+# -----------------------
+LANGUAGE_CODE = 'pl'
+LANGUAGES = [
+    ('pl', 'Polski'),
+    ('en', 'English'),
+    ('nl', 'Nederlands'),
+    ('de', 'Deutsch'),
+    ('bg', 'Български'),
+    ('ru', 'Русский'),
+    ('uk', 'Українська'),
+]
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'pl'
+LOCALE_PATHS = [BASE_DIR / 'locale']
+
+TIME_ZONE = 'Europe/Warsaw'
+USE_I18N = True
+USE_TZ = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

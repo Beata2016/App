@@ -2,6 +2,8 @@ from django.shortcuts import render
 from candidates.models import Candidate
 from Ogloszeniafirm.models import JobPosting
 
+
+
 # Strona główna
 def index(request):
     latest_jobs = JobPosting.objects.filter(is_active=True).order_by('-posted_at')[:6]
@@ -13,7 +15,7 @@ def index(request):
 def firma(request):
     return render(request, 'firma.html')
 
-# Strona o nas
+# Strona "O nas"
 def overons(request):
     return render(request, 'Overons.html')
 
@@ -29,7 +31,7 @@ def ai_chat(request):
 def cv_base(request):
     candidates_list = Candidate.objects.all().order_by('-created_at')
     context = {'candidates': candidates_list}
-    return render(request, 'list10.html', context)
+    return render(request, 'listcccc.html', context)
 
 # Strona z ofertami pracy / vacatures
 def vacatures(request):
@@ -40,3 +42,4 @@ def vacatures(request):
 # Strona dla firm, np. "voor bedrijven"
 def voor_bedrijven(request):
     return render(request, 'voor_bedrijven.html', {})
+

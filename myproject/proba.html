@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentDB - Anonymous CV Database</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #764ba2;
+        }
+
+        .language-switcher {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            padding: 6px 14px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .lang-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .lang-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #0f36e3 0%, #4c40f0 100%);
+            padding: 80px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .search-section {
+            max-width: 1200px;
+            margin: -40px auto 40px;
+            padding: 0 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 18px 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-hint {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .quick-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quick-filter-btn {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .quick-filter-btn:hover,
+        .quick-filter-btn.active {
+            background: white;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .candidates-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px 60px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .results-count {
+            color: #667eea;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .candidates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .candidate-card {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .candidate-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .candidate-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .candidate-code {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .candidate-position {
+            font-size: 1em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+        }
+
+        .candidate-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .candidate-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            background: #e8ecff;
+            color: #667eea;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .tag.eu {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .tag.nl {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .tag.available {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+            font-size: 1.3em;
+            grid-column: 1 / -1;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 16px 40px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cta-btn-primary {
+            background: white;
+            color: #667eea;
+            border: none;
+        }
+
+        .cta-btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .cta-btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 60px 20px 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-section p {
+            color: #b0b0b0;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: #b0b0b0;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #667eea;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-link.linkedin {
+            background: #0077b5;
+        }
+
+        .social-link.facebook {
+            background: #1877f2;
+        }
+
+        .social-link.instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .social-link.twitter {
+            background: #1da1f2;
+        }
+
+        .social-link:hover {
+            transform: scale(1.1);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-bottom p {
+            color: #7a7a7a;
+            font-size: 0.9em;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #7a7a7a;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2em;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="logo" data-i18n="title">TalentDB</div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="listcccc.html">CV Database</a>
+                <a href="job_list.html" data-i18n="jobs">Jobs</a>
+                <a href="contactus2.html" data-i18n="contact">Contact</a>
+            </nav>
+            <div class="language-switcher">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="nl">NL</button>
+                <button class="lang-btn" data-lang="pl">PL</button>
+                <button class="lang-btn" data-lang="de">DE</button>
+                <button class="lang-btn" data-lang="ru">RU</button>
+            </div>
+        </nav>
+
+        <!-- Hero Banner -->
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h1 class="hero-title" data-i18n="heroTitle">Find Your Perfect Candidate</h1>
+                <p class="hero-subtitle" data-i18n="heroSubtitle">Anonymous, unbiased talent discovery powered by skills and experience</p>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-card">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput"
+                        data-i18n-placeholder="searchPlaceholder"
+                        placeholder="Search by position, city, country, industry...">
+                </div>
+                <p class="search-hint" data-i18n="searchHint">Examples: carpenter, Poland, Warsaw, production, 5+ years experience</p>
+                <div class="quick-filters">
+                    <button class="quick-filter-btn active" data-filter="all" data-i18n="allCandidates">All Candidates</button>
+                    <button class="quick-filter-btn" data-filter="available" data-i18n="availableNow">Available Now</button>
+                    <button class="quick-filter-btn" data-filter="nl" data-i18n="nlExperience">NL Experience</button>
+                    <button class="quick-filter-btn" data-filter="eu" data-i18n="euExperience">EU Experience</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Candidates Section -->
+        <section class="candidates-section">
+            <div class="section-header">
+                <h2 class="section-title" data-i18n="candidates">Candidates</h2>
+                <span class="results-count" id="resultsCount">0 results</span>
+            </div>
+            
+            <div class="candidates-grid" id="candidatesGrid">
+                <div class="no-results">Loading candidates...</div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2>Success is Our Passion</h2>
+            <div class="cta-buttons">
+                <a href="job_list.html" class="cta-btn cta-btn-primary">
+                    <i class="fas fa-briefcase"></i> View Jobs
+                </a>
+                <a href="contactus2.html" class="cta-btn cta-btn-secondary">
+                    <i class="fas fa-envelope"></i> Contact Us
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- Company Info -->
+                <div class="footer-section">
+                    <h3>🎯 HR Partner</h3>
+                    <p>Łączymy najlepsze talenty z najlepszymi pracodawcami w całej Europie.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com" target="_blank" class="social-link linkedin">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.facebook.com" target="_blank" class="social-link facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com" target="_blank" class="social-link instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://twitter.com" target="_blank" class="social-link twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- For Candidates -->
+                <div class="footer-section">
+                    <h4>Dla Kandydatów</h4>
+                    <ul>
+                        <li><a href="job_list.html"><i class="fas fa-chevron-right"></i> Szukaj pracy</a></li>
+                        <li><a href="listcccc.html"><i class="fas fa-chevron-right"></i> Dodaj CV</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Porady kariery</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Szkolenia</a></li>
+                    </ul>
+                </div>
+
+                <!-- For Employers -->
+                <div class="footer-section">
+                    <h4>Dla Pracodawców</h4>
+                    <ul>
+                        <li><a href="firma.html"><i class="fas fa-chevron-right"></i> Dodaj ogłoszenie</a></li>
+                        <li><a href="listcccc.html"><i class="fas fa-chevron-right"></i> Baza CV</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Cennik</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Jak to działa</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-section">
+                    <h4>Kontakt</h4>
+                    <ul>
+                        <li><a href="mailto:info@hrconsultingpartner.nl"><i class="fas fa-envelope"></i> info@hrconsultingpartner.nl</a></li>
+                        <li><a href="tel:+31657558110"><i class="fas fa-phone"></i> +31 657558110</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Amsterdam, Nederland</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 HR Consulting Partner. Wszystkie prawa zastrzeżone.</p>
+                <div class="footer-links">
+                    <a href="#">Polityka prywatności</a>
+                    <a href="#">Regulamin</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let candidatesData = [];
+        let filteredCandidates = [];
+        let currentLang = localStorage.getItem('language') || 'en';
+
+        const translations = {
+            en: {
+                title: "TalentDB",
+                heroTitle: "Find Your Perfect Candidate",
+                heroSubtitle: "Anonymous, unbiased talent discovery powered by skills and experience",
+                searchPlaceholder: "Search by position, city, country, industry...",
+                searchHint: "Examples: carpenter, Poland, Warsaw, production, 5+ years experience",
+                allCandidates: "All Candidates",
+                availableNow: "Available Now",
+                nlExperience: "NL Experience",
+                euExperience: "EU Experience",
+                candidates: "Candidates",
+                age: "Age",
+                country: "Country",
+                city: "City",
+                experience: "Exp"
+            },
+            pl: {
+                title: "TalentDB",
+                heroTitle: "Znajdź Idealnego Kandydata",
+                heroSubtitle: "Anonimowe, bezstronne odkrywanie talentów",
+                searchPlaceholder: "Szukaj według stanowiska, miasta, kraju...",
+                searchHint: "Przykłady: stolarz, Polska, Warszawa, produkcja",
+                allCandidates: "Wszyscy",
+                availableNow: "Dostępni",
+                nlExperience: "Doświadczenie NL",
+                euExperience: "Doświadczenie EU",
+                candidates: "Kandydaci",
+                age: "Wiek",
+                country: "Kraj",
+                city: "Miasto",
+                experience: "Doś"
+            }
+        };
+
+        // ŁADOWANIE Z API (lub JSON jako backup)
+        async function loadCandidates() {
+            try {
+                // Próbuj załadować z API
+                const response = await fetch('/api/candidates');
+                if (!response.ok) throw new Error('API unavailable');
+                
+                candidatesData = await response.json();
+                filteredCandidates = [...candidatesData];
+                renderCandidates(filteredCandidates);
+            } catch (error) {
+                console.log('API unavailable, loading from JSON...');
+                try {
+                    const response = await fetch('data/kandydaci.json');
+                    const data = await response.json();
+                    
+                    candidatesData = data.map(c => ({
+                        code: c.candidate_code || `CAND-${c.id}`,
+                        position: c.desired_position || 'Candidate',
+                        age: c.age,
+                        country: c.country === 'pl' ? 'Poland' : c.country,
+                        city: c.city || c.lokalizacja,
+                        experience: c.years_experience || 0,
+                        tags: c.bio ? c.bio.split(',').slice(0, 3) : [],
+                        available: c.available_for_contact,
+                        workedInNL: c.worked_in_nl,
+                        workedInEU: c.worked_in_eu
+                    }));
+                    
+                    filteredCandidates = [...candidatesData];
+                    renderCandidates(filteredCandidates);
+                } catch (e) {
+                    document.getElementById('candidatesGrid').innerHTML = 
+                        '<div class="no-results">❌ Error loading candidates</div>';
+                }
+            }
+        }
+
+        function renderCandidates(candidates) {
+            const grid = document.getElementById('candidatesGrid');
+            const resultsCount = document.getElementById('resultsCount');
+            
+            resultsCount.textContent = `${candidates.length} results`;
+            
+            if (candidates.length === 0) {
+                grid.innerHTML = '<div class="no-results">No candidates found</div>';
+                return;
+            }
+            
+            grid.innerHTML = candidates.map(c => `
+                <div class="candidate-card">
+                    <div class="candidate-avatar">${c.code.slice(-2)}</div>
+                    <div class="candidate-code">${c.code}</div>
+                    <div class="candidate-position">${c.position}</div>
+                    <div class="candidate-info">
+                        ${c.age ? `<div class="info-row"><span class="info-label">Age</span><span class="info-value">${c.age}</span></div>` : ''}
+                        <div class="info-row"><span class="info-label">Country</span><span class="info-value">${c.country}</span></div>
+                        ${c.city ? `<div class="info-row"><span class="info-label">City</span><span class="info-value">${c.city}</span></div>` : ''}
+                        ${c.experience ? `<div class="info-row"><span class="info-label">Exp</span><span class="info-value">${c.experience}y</span></div>` : ''}
+                    </div>
+                    <div class="candidate-tags">
+                        ${c.tags.slice(0,2).map(t => `<span class="tag">${t}</span>`).join('')}
+                        ${c.available ? '<span class="tag available">Available</span>' : ''}
+                        ${c.workedInNL ? '<span class="tag nl">NL</span>' : ''}
+                        ${c.workedInEU ? '<span class="tag eu">EU</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function searchCandidates(query) {
+            query = query.toLowerCase().trim();
+            
+            if (!query) {
+                filteredCandidates = [...candidatesData];
+            } else {
+                filteredCandidates = candidatesData.filter(c => {
+                    const text = `${c.position} ${c.city} ${c.country} ${c.tags.join(' ')}`.toLowerCase();
+                    return text.includes(query);
+                });
+            }
+            
+            renderCandidates(filteredCandidates);
+        }
+
+        // LIVE SEARCH - wyszukiwanie podczas pisania
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchCandidates(e.target.value);
+        });
+
+        // Quick filters
+        document.querySelectorAll('.quick-filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                
+                if (filter === 'all') {
+                    filteredCandidates = [...candidatesData];
+                } else if (filter === 'available') {
+                    filteredCandidates = candidatesData.filter(c => c.available);
+                } else if (filter === 'nl') {
+                    filteredCandidates = candidatesData.filter(c => c.workedInNL);
+                } else if (filter === 'eu') {
+                    filteredCandidates = candidatesData.filter(c => c.workedInEU);
+                }
+                
+                renderCandidates(filteredCandidates);
+            });
+        });
+
+        // Language switcher
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentLang = this.getAttribute('data-lang');
+                localStorage.setItem('language', current
